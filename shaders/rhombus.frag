@@ -21,7 +21,7 @@ float sdRhombus(vec3 p, float la, float lb, float h, float ra) {
 }
 
 
-float sdBoxFrame(vec3 p, vec3 b, float e){
+float sdBoxFrame(vec3 p, vec3 b, float e) {
        p = abs(p  )-b;
   vec3 q = abs(p+e)-e;
   return min(min(
@@ -31,13 +31,15 @@ float sdBoxFrame(vec3 p, vec3 b, float e){
 }
 
 
-float map(in vec3 pos){
-  return sdRhombus(pos, 0.6, 0.2, 0.02, 0.02 ) - 0.01;
+float map(vec3 pos) {
+  return min(sdRhombus(pos, 0.6, 0.2, 0.02, 0.02 ) - 0.01,
+    sdBoxFrame(pos - vec3(2.0, 0.0, 0.0), vec3(0.6, 0.2, 0.02), 0.02)
+  );
   // return sdBoxFrame(pos, vec3(0.6, 0.2, 0.02), 0.02);
 }
 
 // https://iquilezles.org/articles/normalsSDF
-vec3 calcNormal(in vec3 pos) {
+vec3 calc_normal_direction(in vec3 pos) {
   vec2 e = vec2(1.0,-1.0)*0.5773;
   const float eps = 0.0005;
   return normalize( e.xyy*map( pos + e.xyy*eps ) +
@@ -67,36 +69,36 @@ void main() {
   for( int m=0; m<AA; m++ ) {
     for( int n=0; n<AA; n++ ) {
       // pixel coordinates
-      vec2 fragCoord = v_uv * u_screen_resolution;
+      vec2 coord = v_uv * u_screen_resolution;
       vec2 o = vec2(float(m),float(n)) / float(AA) - 0.5;
-      vec2 p = (-u_screen_resolution.xy + 2.0*(fragCoord+o))/u_screen_resolution.y;
+      vec2 p = (-u_screen_resolution.xy + 2.0*(coord+o))/u_screen_resolution.y;
 
       // create view ray
-      vec3 rd = normalize( p.x*uu + p.y*vv + 1.5*ww );
+      vec3 ray_direction = normalize( p.x*uu + p.y*vv + 1.5*ww );
 
       // raymarch
       const float tmax = 800.0;
       float t = 0.0;
-      for( int i=0; i<256; i++ ) {
-        vec3 pos = ro + t*rd;
+      for( int i=0; i<128; i++ ) {
+        vec3 pos = ro + t*ray_direction;
         float h = map(pos);
-        if ( h<0.01 || t>tmax ) break;
+        if ( h<0.001 || t>tmax ) break;
         t += h;
       }
 
       // shading/lighting
-      vec3 col = vec3(0.0);
+      vec3 color = vec3(0.0);
       if (t < tmax) {
-        vec3 pos = ro + t*rd;
-        vec3 nor = calcNormal(pos);
-        float dif = clamp( dot(nor,vec3(0.57703)), 0.0, 1.0 );
-        float amb = 0.5 + 0.5*dot(nor,vec3(0.0,1.0,0.0));
-        col = vec3(0.2,0.3,0.4)*amb + vec3(0.8,0.7,0.5)*dif;
+        vec3 position = ro + t*ray_direction;
+        vec3 normal = calc_normal_direction(position);
+        float dif = clamp(dot(normal, vec3(0.57703)), 0.0, 1.0 );
+        float ambient = 0.6 + 0.4 * dot(normal, vec3(0.0,1.0,0.0));
+        color = vec3(0.2,0.3,0.4)*ambient + vec3(0.8,0.7,0.5)*dif;
       }
 
       // gamma
-      col = sqrt( col );
-      total += col;
+      color = sqrt( color );
+      total += color;
     }
   }
   total /= float(AA*AA);
