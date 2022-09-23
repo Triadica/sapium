@@ -31,9 +31,19 @@ float sdBoxFrame(vec3 p, vec3 b, float e) {
 }
 
 
+float sdBox( vec3 p, vec3 b )
+{
+  vec3 q = abs(p) - b;
+  return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
+}
+
+
 float map(vec3 pos) {
-  return min(sdRhombus(pos, 0.6, 0.2, 0.02, 0.02 ) - 0.01,
+  return min(
+    min(sdRhombus(pos, 0.6, 0.2, 0.02, 0.02 ) - 0.01,
     sdBoxFrame(pos - vec3(2.0, 0.0, 0.0), vec3(0.6, 0.2, 0.02), 0.02)
+    ),
+    sdBox(pos - vec3(4.0, 0.0, 0.0), vec3(0.4, 0.2, 0.2))
   );
   // return sdBoxFrame(pos, vec3(0.6, 0.2, 0.02), 0.02);
 }
