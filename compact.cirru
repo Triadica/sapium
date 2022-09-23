@@ -68,10 +68,10 @@
                   , 0
               when
                 and right-a? $ not= 0 (nth r-move 1)
-                rotate-glance-by! 0 $ * 0.05 (nth r-move 1) elapsed
+                rotate-glance-by! 0 $ * 0.5 (nth r-move 1) elapsed
               when
                 and right-a? $ not= 0 (nth r-move 0)
-                spin-glance-by! $ * -0.05 (nth r-move 0) elapsed
+                spin-glance-by! $ * -0.5 (nth r-move 0) elapsed
               when
                 or
                   not= l-move $ [] 0 0
@@ -79,7 +79,7 @@
                 render-app!
         |refine-strength $ quote
           defn refine-strength (x)
-            &* x $ sqrt
+            &* x 0.1 $ sqrt
               js/Math.abs $ &* x 0.02
         |reload! $ quote
           defn reload! () $ if (nil? build-errors)
@@ -101,13 +101,12 @@
                 .!push (.-uv arr) 0 0 1 0 0 1 0 1 1 0 1 1
                 , arr
               buffer-info $ twgl/createBufferInfoFromArrays gl arrays
-              uniforms $ w-js-log
-                js-object
-                  :u_screen_resolution $ js-array (* dpr js/window.innerWidth) (* dpr js/window.innerHeight)
-                  :u_time $ * 0.001 (js/performance.now)
-                  :forward $ to-js-data @*viewer-forward
-                  :upward $ to-js-data @*viewer-upward
-                  :view_position $ do (to-js-data @*viewer-position) (js-array 0 0 0)
+              uniforms $ js-object
+                :u_screen_resolution $ js-array (* dpr js/window.innerWidth) (* dpr js/window.innerHeight)
+                :u_time $ * 0.001 (js/performance.now)
+                :forward $ to-js-data @*viewer-forward
+                :upward $ to-js-data @*viewer-upward
+                :viewer_position $ do (to-js-data @*viewer-position) (; js-array 0 0 0)
             twgl/resizeCanvasToDisplaySize $ .-canvas gl
             .!viewport gl 0 0 (-> gl .-canvas .-width) (-> gl .-canvas .-height)
             .!enable gl $ .-DEPTH_TEST gl
@@ -118,9 +117,6 @@
             twgl/setBuffersAndAttributes gl program-info buffer-info
             twgl/setUniforms program-info uniforms
             twgl/drawBufferInfo gl buffer-info $ .-TRIANGLES gl
-        |render-loop! $ quote
-          defn render-loop! () $ js/requestAnimationFrame
-            fn (a) (paint-canvas!) (render-loop!)
       :ns $ quote
         ns sapium.app.main $ :require ("\"./calcit.build-errors" :default build-errors) ("\"bottom-tip" :default hud!)
           sapium.config :refer $ dev? dpr inline-shader cached-build-program
@@ -133,7 +129,7 @@
       :defs $ {}
         |*shader-programs $ quote
           defatom *shader-programs $ {}
-        |back-cone-scale $ quote (def back-cone-scale 0.1)
+        |back-cone-scale $ quote (def back-cone-scale 0.01)
         |cached-build-program $ quote
           defn cached-build-program (gl vs fs)
             let
@@ -205,7 +201,7 @@
         |*viewer-forward $ quote
           defatom *viewer-forward $ [] 0 0 -1
         |*viewer-position $ quote
-          defatom *viewer-position $ [] 0 0 400
+          defatom *viewer-position $ [] 0 1 4
         |*viewer-upward $ quote
           defatom *viewer-upward $ [] 0 1 0
         |move-viewer-by! $ quote

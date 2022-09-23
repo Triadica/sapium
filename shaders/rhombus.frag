@@ -50,15 +50,19 @@ const int AA = 3;
 
 void main() {
   // camera movement
-  float an = 0.5*(u_time-10.0);
-  vec3 ro = vec3( 1.0*cos(an), 0.4, 1.0*sin(an) );
-  vec3 ta = vec3( 0.0, 0.0, 0.0 );
-  // camera matrix
-  vec3 ww = normalize( ta - ro );
-  vec3 uu = normalize( cross(ww,vec3(0.0,1.0,0.0) ) );
-  vec3 vv = normalize( cross(uu,ww));
+  // float an = 0.5*(u_time-10.0);
+  // vec3 ro = vec3( 1.0*cos(an), 0.4, 1.0*sin(an) );
+  // // camera matrix
+  // vec3 ww = normalize( -ro );
+  // vec3 uu = normalize( cross(ww,vec3(0.0,1.0,0.0) ) );
+  // vec3 vv = normalize( cross(uu,ww));
 
-  vec3 tot = vec3(0.0);
+  vec3 ro = viewer_position;
+  vec3 ww = forward;
+  vec3 vv = upward;
+  vec3 uu = normalize(cross( ww, vv)); // rightward
+
+  vec3 total = vec3(0.0);
 
   for( int m=0; m<AA; m++ ) {
     for( int n=0; n<AA; n++ ) {
@@ -66,18 +70,17 @@ void main() {
       vec2 fragCoord = v_uv * u_screen_resolution;
       vec2 o = vec2(float(m),float(n)) / float(AA) - 0.5;
       vec2 p = (-u_screen_resolution.xy + 2.0*(fragCoord+o))/u_screen_resolution.y;
-      // vec2 p = (-u_screen_resolution.xy + 2.0*fragCoord)/u_screen_resolution.y;
 
       // create view ray
       vec3 rd = normalize( p.x*uu + p.y*vv + 1.5*ww );
 
       // raymarch
-      const float tmax = 5.0;
+      const float tmax = 800.0;
       float t = 0.0;
       for( int i=0; i<256; i++ ) {
         vec3 pos = ro + t*rd;
         float h = map(pos);
-        if ( h<0.0001 || t>tmax ) break;
+        if ( h<0.01 || t>tmax ) break;
         t += h;
       }
 
@@ -93,9 +96,9 @@ void main() {
 
       // gamma
       col = sqrt( col );
-      tot += col;
+      total += col;
     }
   }
-  tot /= float(AA*AA);
-	gl_FragColor = vec4( tot, 1.0 );
+  total /= float(AA*AA);
+	gl_FragColor = vec4( total, 1.0 );
 }
