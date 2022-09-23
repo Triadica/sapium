@@ -34,11 +34,56 @@
             if dev? $ load-console-formatter!
             twgl/setDefaults $ js-object (:attribPrefix "\"a_")
             reset! *gl-context $ .!getContext canvas "\"webgl"
+            render-control!
+            start-control-loop! 10 on-control-event
             set! js/window.onresize $ fn (e) (render-app!)
             render-app!
+        |on-control-event $ quote
+          defn on-control-event (elapsed states delta)
+            let
+                l-move $ map (:left-move states) refine-strength
+                r-move $ map (:right-move states) refine-strength
+                r-delta $ :right-move delta
+                l-delta $ :left-move delta
+                left-a? $ :left-a? states
+                right-a? $ or (:right-a? states) (:shift? states)
+                right-b? $ :right-b? states
+                left-b? $ :left-b? states
+              ; println "\"L" l-move "\"R" r-move
+              when
+                not= 0 $ nth l-move 1
+                move-viewer-by! 0 0 $ negate
+                  * 2 elapsed $ nth l-move 1
+              when
+                not= 0 $ nth l-move 0
+                rotate-glance-by!
+                  * -0.05 elapsed $ nth l-move 0
+                  , 0
+              when
+                and (not right-a?)
+                  not= ([] 0 0) r-move
+                move-viewer-by!
+                  * 2 elapsed $ nth r-move 0
+                  * 2 elapsed $ nth r-move 1
+                  , 0
+              when
+                and right-a? $ not= 0 (nth r-move 1)
+                rotate-glance-by! 0 $ * 0.05 (nth r-move 1) elapsed
+              when
+                and right-a? $ not= 0 (nth r-move 0)
+                spin-glance-by! $ * -0.05 (nth r-move 0) elapsed
+              when
+                or
+                  not= l-move $ [] 0 0
+                  not= r-move $ [] 0 0
+                render-app!
+        |refine-strength $ quote
+          defn refine-strength (x)
+            &* x $ sqrt
+              js/Math.abs $ &* x 0.02
         |reload! $ quote
           defn reload! () $ if (nil? build-errors)
-            do (render-app!)
+            do (render-app!) (replace-control-loop! 10 on-control-event)
               set! js/window.onresize $ fn (e) (render-app!)
               hud! "\"ok~" "\"OK"
             hud! "\"error" build-errors
@@ -56,9 +101,13 @@
                 .!push (.-uv arr) 0 0 1 0 0 1 0 1 1 0 1 1
                 , arr
               buffer-info $ twgl/createBufferInfoFromArrays gl arrays
-              uniforms $ js-object
-                :u_screen_resolution $ js-array (* dpr js/window.innerWidth) (* dpr js/window.innerHeight)
-                :u_time $ * 0.001 (js/performance.now)
+              uniforms $ w-js-log
+                js-object
+                  :u_screen_resolution $ js-array (* dpr js/window.innerWidth) (* dpr js/window.innerHeight)
+                  :u_time $ * 0.001 (js/performance.now)
+                  :forward $ to-js-data @*viewer-forward
+                  :upward $ to-js-data @*viewer-upward
+                  :view_position $ do (to-js-data @*viewer-position) (js-array 0 0 0)
             twgl/resizeCanvasToDisplaySize $ .-canvas gl
             .!viewport gl 0 0 (-> gl .-canvas .-width) (-> gl .-canvas .-height)
             .!enable gl $ .-DEPTH_TEST gl
@@ -79,6 +128,7 @@
           touch-control.core :refer $ render-control! start-control-loop! replace-control-loop!
           sapium.global :refer $ *gl-context
           memof.once :refer $ reset-memof1-caches!
+          sapium.perspective :refer $ *viewer-position *viewer-forward *viewer-upward transform-3d new-lookat-point move-viewer-by! rotate-glance-by! spin-glance-by!
     |sapium.config $ {}
       :defs $ {}
         |*shader-programs $ quote
@@ -150,3 +200,65 @@
           sapium.hud :refer $ hud-display
           sapium.global :refer $ *viewer-position
           sapium.config :refer $ back-cone-scale
+    |sapium.perspective $ {}
+      :defs $ {}
+        |*viewer-forward $ quote
+          defatom *viewer-forward $ [] 0 0 -1
+        |*viewer-position $ quote
+          defatom *viewer-position $ [] 0 0 400
+        |*viewer-upward $ quote
+          defatom *viewer-upward $ [] 0 1 0
+        |move-viewer-by! $ quote
+          defn move-viewer-by! (x0 y0 z0)
+            let
+                dv $ to-viewer-axis x0 y0 z0
+                position @*viewer-position
+              reset! *viewer-position $ &v+ position dv
+              ; println ([] x0 y0 z0) |=> $ [] dx dy dz
+        |rotate-glance-by! $ quote
+          defn rotate-glance-by! (x y)
+            if (not= x 0)
+              let
+                  da $ * x 0.1
+                  forward @*viewer-forward
+                  upward @*viewer-upward
+                  rightward $ v-cross upward forward
+                reset! *viewer-forward $ &v+
+                  v-scale forward $ js/Math.cos da
+                  v-scale rightward $ js/Math.sin da
+            if (not= y 0)
+              let
+                  da $ * y 0.1
+                  forward @*viewer-forward
+                  upward @*viewer-upward
+                reset! *viewer-forward $ &v+
+                  v-scale forward $ js/Math.cos da
+                  v-scale upward $ js/Math.sin da
+                reset! *viewer-upward $ &v+
+                  v-scale upward $ js/Math.cos da
+                  v-scale forward $ negate (js/Math.sin da)
+        |spin-glance-by! $ quote
+          defn spin-glance-by! (v)
+            if (not= v 0)
+              let
+                  da $ * v 0.1
+                  forward @*viewer-forward
+                  upward @*viewer-upward
+                  rightward $ v-cross upward forward
+                reset! *viewer-upward $ &v+
+                  v-scale upward $ js/Math.cos da
+                  v-scale rightward $ js/Math.sin da
+        |to-viewer-axis $ quote
+          defn to-viewer-axis (x y z) (; "\"converting from WebGL coordinate to object coordinate")
+            let
+                forward @*viewer-forward
+                upward @*viewer-upward
+                rightward $ v-cross upward forward
+              &v+
+                &v+
+                  v-scale rightward $ negate x
+                  v-scale upward y
+                v-scale forward $ negate z
+      :ns $ quote
+        ns sapium.perspective $ :require
+          quaternion.core :refer $ v-cross v-scale v-dot &v- &v+
