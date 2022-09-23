@@ -202,6 +202,19 @@
                       |T $ {} (:at 1663868445339) (:by |u0) (:text |.!getContext) (:type :leaf)
                       |b $ {} (:at 1663868445339) (:by |u0) (:text |canvas) (:type :leaf)
                       |h $ {} (:at 1663868445339) (:by |u0) (:text "|\"webgl") (:type :leaf)
+              |k $ {} (:at 1663902126871) (:by |u0) (:type :expr)
+                :data $ {}
+                  |T $ {} (:at 1663902131278) (:by |u0) (:text |set!) (:type :leaf)
+                  |b $ {} (:at 1663902137446) (:by |u0) (:text |js/window.onresize) (:type :leaf)
+                  |h $ {} (:at 1663902137731) (:by |u0) (:type :expr)
+                    :data $ {}
+                      |T $ {} (:at 1663902137998) (:by |u0) (:text |fn) (:type :leaf)
+                      |b $ {} (:at 1663902138260) (:by |u0) (:type :expr)
+                        :data $ {}
+                          |T $ {} (:at 1663902139087) (:by |u0) (:text |e) (:type :leaf)
+                      |h $ {} (:at 1663902139671) (:by |u0) (:type :expr)
+                        :data $ {}
+                          |T $ {} (:at 1663902143514) (:by |u0) (:text |render-app!) (:type :leaf)
               |l $ {} (:at 1663864240576) (:by |u0) (:type :expr)
                 :data $ {}
                   |T $ {} (:at 1663864245813) (:by |u0) (:text |render-app!) (:type :leaf)
@@ -224,6 +237,19 @@
                       |U $ {} (:at 1656164596649) (:by |u0) (:type :expr)
                         :data $ {}
                           |T $ {} (:at 1656164596649) (:by |u0) (:text |render-app!) (:type :leaf)
+                      |X $ {} (:at 1663902151724) (:by |u0) (:type :expr)
+                        :data $ {}
+                          |T $ {} (:at 1663902151724) (:by |u0) (:text |set!) (:type :leaf)
+                          |b $ {} (:at 1663902151724) (:by |u0) (:text |js/window.onresize) (:type :leaf)
+                          |h $ {} (:at 1663902151724) (:by |u0) (:type :expr)
+                            :data $ {}
+                              |T $ {} (:at 1663902151724) (:by |u0) (:text |fn) (:type :leaf)
+                              |b $ {} (:at 1663902151724) (:by |u0) (:type :expr)
+                                :data $ {}
+                                  |T $ {} (:at 1663902151724) (:by |u0) (:text |e) (:type :leaf)
+                              |h $ {} (:at 1663902151724) (:by |u0) (:type :expr)
+                                :data $ {}
+                                  |T $ {} (:at 1663902151724) (:by |u0) (:text |render-app!) (:type :leaf)
                       |b $ {} (:at 1651655828085) (:by |u0) (:type :expr)
                         :data $ {}
                           |T $ {} (:at 1651655829219) (:by |u0) (:text |hud!) (:type :leaf)
@@ -251,14 +277,14 @@
                           |b $ {} (:at 1663868473427) (:by |u0) (:type :expr)
                             :data $ {}
                               |T $ {} (:at 1663868475287) (:by |u0) (:text |inline-shader) (:type :leaf)
-                              |b $ {} (:at 1663868500130) (:by |u0) (:text "|\"canvas.vert") (:type :leaf)
+                              |b $ {} (:at 1663901750632) (:by |u0) (:text "|\"rhombus.vert") (:type :leaf)
                       |b $ {} (:at 1663868501262) (:by |u0) (:type :expr)
                         :data $ {}
                           |T $ {} (:at 1663868502567) (:by |u0) (:text |fs) (:type :leaf)
                           |b $ {} (:at 1663868503723) (:by |u0) (:type :expr)
                             :data $ {}
                               |T $ {} (:at 1663868505393) (:by |u0) (:text |inline-shader) (:type :leaf)
-                              |b $ {} (:at 1663868510243) (:by |u0) (:text "|\"canvas.frag") (:type :leaf)
+                              |b $ {} (:at 1663901752545) (:by |u0) (:text "|\"rhombus.frag") (:type :leaf)
                       |e $ {} (:at 1663869436970) (:by |u0) (:type :expr)
                         :data $ {}
                           |T $ {} (:at 1663869437693) (:by |u0) (:text |gl) (:type :leaf)
@@ -363,8 +389,26 @@
                                   |b $ {} (:at 1663869417102) (:by |u0) (:type :expr)
                                     :data $ {}
                                       |T $ {} (:at 1663869418538) (:by |u0) (:text |js-array) (:type :leaf)
-                                      |b $ {} (:at 1663869421509) (:by |u0) (:text |200) (:type :leaf)
-                                      |h $ {} (:at 1663869422251) (:by |u0) (:text |200) (:type :leaf)
+                                      |b $ {} (:at 1663901869126) (:by |u0) (:type :expr)
+                                        :data $ {}
+                                          |T $ {} (:at 1663901869944) (:by |u0) (:text |*) (:type :leaf)
+                                          |b $ {} (:at 1663901873225) (:by |u0) (:text |dpr) (:type :leaf)
+                                          |h $ {} (:at 1663901882931) (:by |u0) (:text |js/window.innerWidth) (:type :leaf)
+                                      |e $ {} (:at 1663901869126) (:by |u0) (:type :expr)
+                                        :data $ {}
+                                          |T $ {} (:at 1663901869944) (:by |u0) (:text |*) (:type :leaf)
+                                          |b $ {} (:at 1663901873225) (:by |u0) (:text |dpr) (:type :leaf)
+                                          |h $ {} (:at 1663901890247) (:by |u0) (:text |js/window.innerHeight) (:type :leaf)
+                              |h $ {} (:at 1663901892868) (:by |u0) (:type :expr)
+                                :data $ {}
+                                  |T $ {} (:at 1663901895826) (:by |u0) (:text |:u_time) (:type :leaf)
+                                  |b $ {} (:at 1663901932132) (:by |u0) (:type :expr)
+                                    :data $ {}
+                                      |D $ {} (:at 1663901933352) (:by |u0) (:text |*) (:type :leaf)
+                                      |L $ {} (:at 1663901935018) (:by |u0) (:text |0.001) (:type :leaf)
+                                      |T $ {} (:at 1663901897918) (:by |u0) (:type :expr)
+                                        :data $ {}
+                                          |T $ {} (:at 1663901931272) (:by |u0) (:text |js/performance.now) (:type :leaf)
                   |T $ {} (:at 1663864248837) (:by |u0) (:type :expr)
                     :data $ {}
                       |T $ {} (:at 1663869656848) (:by |u0) (:text |twgl/resizeCanvasToDisplaySize) (:type :leaf)

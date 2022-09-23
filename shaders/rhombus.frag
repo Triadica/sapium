@@ -1,4 +1,11 @@
 
+precision mediump float;
+
+uniform vec2 u_screen_resolution;
+uniform float u_time;
+
+varying vec2 v_uv;
+
 float ndot(vec2 a, vec2 b ) { return a.x*b.x - a.y*b.y; }
 
 // la,lb=semi axis, h=height, ra=corner
@@ -28,12 +35,12 @@ vec3 calcNormal( in vec3 pos )
           e.xxx*map( pos + e.xxx*eps ) );
 }
 
+const int AA = 3;
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
+void main()
 {
-  int AA = 3;
   // camera movement
-  float an = 0.5*(iTime-10.0);
+  float an = 0.5*(u_time-10.0);
   vec3 ro = vec3( 1.0*cos(an), 0.4, 1.0*sin(an) );
   vec3 ta = vec3( 0.0, 0.0, 0.0 );
   // camera matrix
@@ -47,10 +54,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
   for( int n=0; n<AA; n++ )
   {
     // pixel coordinates
+    vec2 fragCoord = v_uv * u_screen_resolution;
     vec2 o = vec2(float(m),float(n)) / float(AA) - 0.5;
-    vec2 p = (-iResolution.xy + 2.0*(fragCoord+o))/iResolution.y;
+    vec2 p = (-u_screen_resolution.xy + 2.0*(fragCoord+o))/u_screen_resolution.y;
 
-    // vec2 p = (-iResolution.xy + 2.0*fragCoord)/iResolution.y;
+    // vec2 p = (-u_screen_resolution.xy + 2.0*fragCoord)/u_screen_resolution.y;
 
     // create view ray
     vec3 rd = normalize( p.x*uu + p.y*vv + 1.5*ww );
@@ -83,5 +91,5 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     tot += col;
   }
   tot /= float(AA*AA);
-	fragColor = vec4( tot, 1.0 );
+	gl_FragColor = vec4( tot, 1.0 );
 }

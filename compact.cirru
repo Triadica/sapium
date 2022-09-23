@@ -34,15 +34,18 @@
             if dev? $ load-console-formatter!
             twgl/setDefaults $ js-object (:attribPrefix "\"a_")
             reset! *gl-context $ .!getContext canvas "\"webgl"
+            set! js/window.onresize $ fn (e) (render-app!)
             render-app!
         |reload! $ quote
           defn reload! () $ if (nil? build-errors)
-            do (render-app!) (hud! "\"ok~" "\"OK")
+            do (render-app!)
+              set! js/window.onresize $ fn (e) (render-app!)
+              hud! "\"ok~" "\"OK"
             hud! "\"error" build-errors
         |render-app! $ quote
           defn render-app! () $ let
-              vs $ inline-shader "\"canvas.vert"
-              fs $ inline-shader "\"canvas.frag"
+              vs $ inline-shader "\"rhombus.vert"
+              fs $ inline-shader "\"rhombus.frag"
               gl @*gl-context
               program-info $ cached-build-program gl vs fs
               arrays $ let
@@ -54,7 +57,8 @@
                 , arr
               buffer-info $ twgl/createBufferInfoFromArrays gl arrays
               uniforms $ js-object
-                :u_screen_resolution $ js-array 200 200
+                :u_screen_resolution $ js-array (* dpr js/window.innerWidth) (* dpr js/window.innerHeight)
+                :u_time $ * 0.001 (js/performance.now)
             twgl/resizeCanvasToDisplaySize $ .-canvas gl
             .!viewport gl 0 0 (-> gl .-canvas .-width) (-> gl .-canvas .-height)
             .!enable gl $ .-DEPTH_TEST gl
