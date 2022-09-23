@@ -57,7 +57,7 @@
               when
                 not= 0 $ nth l-move 0
                 rotate-glance-by!
-                  * -0.05 elapsed $ nth l-move 0
+                  * -0.5 elapsed $ nth l-move 0
                   , 0
               when
                 and (not right-a?)
@@ -80,7 +80,7 @@
         |refine-strength $ quote
           defn refine-strength (x)
             &* x 0.1 $ sqrt
-              js/Math.abs $ &* x 0.02
+              js/Math.abs $ &* x 0.01
         |reload! $ quote
           defn reload! () $ if (nil? build-errors)
             do (render-app!) (replace-control-loop! 10 on-control-event)
@@ -129,7 +129,7 @@
       :defs $ {}
         |*shader-programs $ quote
           defatom *shader-programs $ {}
-        |back-cone-scale $ quote (def back-cone-scale 0.01)
+        |back-cone-scale $ quote (def back-cone-scale 1)
         |cached-build-program $ quote
           defn cached-build-program (gl vs fs)
             let
