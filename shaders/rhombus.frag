@@ -66,16 +66,29 @@ float map(vec3 pos) {
   vec3 q = pos-c*clamp(mp,-l,l);
   // vec3 replicated_position = fract(pos * 10.0) * 0.1;
   return sdSphere(q, 1.0);
+  // return sdSphere(pos, 1.0);
 }
 
-// https://iquilezles.org/articles/normalsSDF
-vec3 calc_normal_direction(in vec3 pos) {
-  vec2 e = vec2(1.0,-1.0)*0.5773;
-  const float eps = 0.0005;
-  return normalize( e.xyy*map( pos + e.xyy*eps ) +
-          e.yyx*map( pos + e.yyx*eps ) +
-          e.yxy*map( pos + e.yxy*eps ) +
-          e.xxx*map( pos + e.xxx*eps ) );
+// // https://iquilezles.org/articles/normalsSDF
+// vec3 calc_normal_direction(in vec3 pos) {
+//   vec2 e = vec2(1.0,-1.0)*0.5773;
+//   const float eps = 0.05;
+//   return normalize( e.xyy*map( pos + e.xyy*eps ) +
+//           e.yyx*map( pos + e.yyx*eps ) +
+//           e.yxy*map( pos + e.yxy*eps ) +
+//           e.xxx*map( pos + e.xxx*eps ) );
+// }
+
+vec3 calc_normal_direction(vec3 p) {
+	float eps = 0.006;
+	const vec3 v1 = vec3( 1.0,-1.0,-1.0);
+	const vec3 v2 = vec3(-1.0,-1.0, 1.0);
+	const vec3 v3 = vec3(-1.0, 1.0,-1.0);
+	const vec3 v4 = vec3( 1.0, 1.0, 1.0);
+	return normalize( v1 * map( p + v1*eps ) +
+					  v2 * map( p + v2*eps ) +
+					  v3 * map( p + v3*eps ) +
+					  v4 * map( p + v4*eps ) );
 }
 
 const int AA = 3;
@@ -107,7 +120,7 @@ void main() {
       vec3 ray_direction = normalize( p.x*uu + p.y*vv + 1.5*ww );
 
       // raymarch
-      const float tmax = 800.0;
+      const float tmax = 40.0;
       float t = 0.0;
       for( int i=0; i<128; i++ ) {
         vec3 pos = ro + t*ray_direction;
