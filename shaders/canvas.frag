@@ -1,5 +1,5 @@
 
-precision mediump float;
+precision highp float;
 
 // uniform vec2 u_screen_resolution;
 
