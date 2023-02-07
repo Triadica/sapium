@@ -41,6 +41,23 @@ float sdBox(vec3 p, vec3 b) {
   return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
 }
 
+float sdOctahedron(vec3 p, float s) {
+  p = abs(p);
+  float m = p.x + p.y + p.z - s;
+  vec3 q;
+  if (3.0 * p.x < m)
+    q = p.xyz;
+  else if (3.0 * p.y < m)
+    q = p.yzx;
+  else if (3.0 * p.z < m)
+    q = p.zxy;
+  else
+    return m * 0.57735027;
+
+  float k = clamp(0.5 * (q.z - q.y + s), 0.0, s);
+  return length(vec3(q.x, q.y - s + k, q.z - k));
+}
+
 float fake_round(float a) {
   float b = fract(a);
   if (b < 0.5) {
@@ -58,14 +75,19 @@ float map(vec3 pos) {
   //   sdBox(pos - vec3(4.0, 0.0, 0.0), vec3(0.4, 0.2, 0.2))
   // );
   // return sdBoxFrame(pos, vec3(0.6, 0.2, 0.02), 0.02);
-  float c = 4.0;
-  vec3 l = vec3(200.0, 0.0, 0.0);
+  float c = 1.0;
+  // vec3 l = vec3(20.0, 0.0, 0.0);
+  float limit = 20.0;
   vec3 pos_c = pos / c;
-  vec3 mp = vec3(fake_round(pos_c.x), fake_round(pos_c.x), fake_round(pos_c.x));
-  vec3 q = pos - c * clamp(mp, -l, l);
+  vec3 mp = vec3(clamp(fake_round(pos_c.x), -limit, limit),
+                 clamp(fake_round(pos_c.y), -limit, limit),
+                 clamp(fake_round(pos_c.z), -limit, limit));
+  // vec3 q = pos - c * clamp(mp, -l, l);
+  vec3 q = pos - c * mp;
   // vec3 replicated_position = fract(pos * 10.0) * 0.1;
-  return sdSphere(q, 1.0);
+  return sdSphere(q, 0.08);
   // return sdSphere(pos, 1.0);
+  // return sdOctahedron(q, 0.22);
 }
 
 // // https://iquilezles.org/articles/normalsSDF
@@ -119,9 +141,9 @@ void main() {
       vec3 ray_direction = normalize(p.x * uu + p.y * vv + 1.5 * ww);
 
       // raymarch
-      const float tmax = 40.0;
+      const float tmax = 100.0;
       float t = 0.0;
-      for (int i = 0; i < 128; i++) {
+      for (int i = 0; i < 256; i++) {
         vec3 pos = ro + t * ray_direction;
         float h = map(pos);
         if (h < 0.001 || t > tmax)
