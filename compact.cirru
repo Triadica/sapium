@@ -33,7 +33,8 @@
             twgl/setDefaults $ js-object (:attribPrefix "\"a_")
             render-control!
             start-control-loop! 10 on-control-event
-            set! js/window.onresize $ fn (e) (render-app!)
+            set! js/window.onresize $ fn (e) (reset-canvas-size!) (render-app!)
+            reset-canvas-size!
             render-app!
         |on-control-event $ quote
           defn on-control-event (elapsed states delta)
@@ -81,7 +82,7 @@
         |reload! $ quote
           defn reload! () $ if (nil? build-errors)
             do (render-app!) (replace-control-loop! 10 on-control-event)
-              set! js/window.onresize $ fn (e) (render-app!)
+              set! js/window.onresize $ fn (e) (reset-canvas-size!) (render-app!)
               hud! "\"ok~" "\"OK"
             hud! "\"error" build-errors
         |render-app! $ quote
@@ -116,12 +117,18 @@
             twgl/setBuffersAndAttributes gl program-info buffer-info
             twgl/setUniforms program-info uniforms
             twgl/drawBufferInfo gl buffer-info $ .-TRIANGLES gl
+        |reset-canvas-size! $ quote
+          defn reset-canvas-size! ()
+            ; -> canvas .-width $ set! (&* dpr js/window.innerWidth)
+            ; -> canvas .-height $ set! (&* dpr js/window.innerHeight)
+            -> canvas .-style .-width $ set! (str js/window.innerWidth "\"px")
+            -> canvas .-style .-height $ set! (str js/window.innerHeight "\"px")
       :ns $ quote
         ns sapium.app.main $ :require ("\"./calcit.build-errors" :default build-errors) ("\"bottom-tip" :default hud!)
           sapium.config :refer $ dev? dpr inline-shader cached-build-program
           "\"twgl.js" :as twgl
           touch-control.core :refer $ render-control! start-control-loop! replace-control-loop!
-          sapium.global :refer $ *gl-context
+          sapium.global :refer $ *gl-context canvas
           memof.once :refer $ reset-memof1-caches!
           sapium.perspective :refer $ *viewer-position *viewer-forward *viewer-upward transform-3d new-lookat-point move-viewer-by! rotate-glance-by! spin-glance-by!
     |sapium.config $ {}

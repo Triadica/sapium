@@ -91,7 +91,8 @@ vec3 calc_normal_direction(vec3 p) {
 					  v4 * map( p + v4*eps ) );
 }
 
-const int AA = 3;
+// turn down for my pad
+const int AA = 1;
 
 void main() {
   // camera movement
