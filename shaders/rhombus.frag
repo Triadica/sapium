@@ -75,9 +75,9 @@ float map(vec3 pos) {
   //   sdBox(pos - vec3(4.0, 0.0, 0.0), vec3(0.4, 0.2, 0.2))
   // );
   // return sdBoxFrame(pos, vec3(0.6, 0.2, 0.02), 0.02);
-  float c = 1.0;
+  float c = 4.0;
   // vec3 l = vec3(20.0, 0.0, 0.0);
-  float limit = 20.0;
+  float limit = 60.0;
   vec3 pos_c = pos / c;
   vec3 mp = vec3(clamp(fake_round(pos_c.x), -limit, limit),
                  clamp(fake_round(pos_c.y), -limit, limit),
@@ -85,7 +85,7 @@ float map(vec3 pos) {
   // vec3 q = pos - c * clamp(mp, -l, l);
   vec3 q = pos - c * mp;
   // vec3 replicated_position = fract(pos * 10.0) * 0.1;
-  return sdSphere(q, 0.08);
+  return sdSphere(q, 0.001);
   // return sdSphere(pos, 1.0);
   // return sdOctahedron(q, 0.22);
 }
@@ -141,11 +141,15 @@ void main() {
       vec3 ray_direction = normalize(p.x * uu + p.y * vv + 1.5 * ww);
 
       // raymarch
-      const float tmax = 100.0;
+      const float tmax = 120.0;
       float t = 0.0;
+      float nearest = 1000.0;
       for (int i = 0; i < 256; i++) {
         vec3 pos = ro + t * ray_direction;
         float h = map(pos);
+        if (h < nearest) {
+          nearest = h;
+        }
         if (h < 0.001 || t > tmax)
           break;
         t += h;
@@ -158,7 +162,10 @@ void main() {
         vec3 normal = calc_normal_direction(position);
         float dif = clamp(dot(normal, vec3(0.57703)), 0.0, 1.0);
         float ambient = 0.6 + 0.4 * dot(normal, vec3(0.0, 1.0, 0.0));
-        color = vec3(0.2, 0.3, 0.4) * ambient + vec3(0.8, 0.7, 0.6) * dif;
+        color = vec3(0.6, 0.5, 0.2) * ambient + vec3(0.4, 0.5, 0.2) * dif;
+      } else {
+        float l = 0.1 / (nearest + 0.01);
+        color = vec3(l*0.4, l*0.2, l);
       }
 
       // gamma
