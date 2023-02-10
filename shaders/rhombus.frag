@@ -67,7 +67,7 @@ float fake_round(float a) {
   }
 }
 
-float map(vec3 pos) {
+float map_old(vec3 pos) {
   // return min(
   //   min(sdRhombus(pos, 0.6, 0.2, 0.02, 0.02 ) - 0.01,
   //   sdBoxFrame(pos - vec3(2.0, 0.0, 0.0), vec3(0.6, 0.2, 0.02), 0.02)
@@ -88,6 +88,97 @@ float map(vec3 pos) {
   return sdSphere(q, 0.001);
   // return sdSphere(pos, 1.0);
   // return sdOctahedron(q, 0.22);
+}
+
+const float sqrt2 = 1.4142135623730950488016887242096980785696718753769480731766797379;
+const float sqrt3 = 1.7320508075688772935274463415058723669428052538103806280558069794;
+
+/// turn xyz into compact abc
+vec3 resolve_axis(vec3 p) {
+  float b = sqrt3 * p.y / sqrt2;
+  float c = (p.z - 0.5 * b / sqrt3) * 2.0 / sqrt3;
+  float a = p.x - 0.5 * c - 0.5 * b;
+  return vec3(a, b, c);
+}
+
+/// turn compact abc into compact xyz
+vec3 transform_axis(vec3 p) {
+  float x = p.x + 0.5 * p.y + 0.5 * p.z;
+  float y = p.y * sqrt2 / sqrt3;
+  float z = 0.5 * sqrt3 * p.z + 0.5 * p.y / sqrt3;
+  return vec3(x, y, z);
+}
+
+float map(vec3 pos) {
+  float c = 2.0;
+
+  float limit = 40.0 / c;
+  vec3 low = vec3(-limit,-limit,-limit);
+  vec3 high = vec3(limit,limit,limit);
+
+  vec3 pos_c = pos / c;
+
+  vec3 q = resolve_axis(pos_c);
+
+  vec3 r1 = vec3(floor(q.x), floor(q.y), floor(q.z));
+  r1 = clamp(r1, low, high);
+  vec3 p1 = transform_axis(r1);
+
+  vec3 r2 = vec3(floor(q.x), floor(q.y), ceil(q.z));
+  r2 = clamp(r2, low, high);
+  vec3 p2 = transform_axis(r2);
+
+  vec3 r3 = vec3(floor(q.x), ceil(q.y), floor(q.z));
+  r3 = clamp(r3, low, high);
+  vec3 p3 = transform_axis(r3);
+
+  vec3 r4 = vec3(floor(q.x), ceil(q.y), ceil(q.z));
+  r4 = clamp(r4, low, high);
+  vec3 p4 = transform_axis(r4);
+
+  vec3 r5 = vec3(ceil(q.x), floor(q.y), floor(q.z));
+  r5 = clamp(r5, low, high);
+  vec3 p5 = transform_axis(r5);
+
+  vec3 r6 = vec3(ceil(q.x), floor(q.y), ceil(q.z));
+  r6 = clamp(r6, low, high);
+  vec3 p6 = transform_axis(r6);
+
+  vec3 r7 = vec3(ceil(q.x), ceil(q.y), floor(q.z));
+  r7 = clamp(r7, low, high);
+  vec3 p7 = transform_axis(r7);
+
+  vec3 r8 = vec3(ceil(q.x), ceil(q.y), ceil(q.z));
+  r8 = clamp(r8, low, high);
+  vec3 p8 = transform_axis(r8);
+
+
+  float l = distance(p1, pos_c);
+  vec3 qq = p1;
+
+  float ll = distance(p2, pos_c);
+  if (ll < l) { qq = p2; l = ll; }
+
+  ll = distance(p3, pos_c);
+  if (ll < l) { qq = p3; l = ll; }
+
+  ll = distance(p4, pos_c);
+  if (ll < l) { qq = p4; l = ll; }
+
+  ll = distance(p5, pos_c);
+  if (ll < l) { qq = p5; l = ll; }
+
+  ll = distance(p6, pos_c);
+  if (ll < l) { qq = p6; l = ll; }
+
+  ll = distance(p7, pos_c);
+  if (ll < l) { qq = p7; l = ll; }
+
+  ll = distance(p8, pos_c);
+  if (ll < l) { qq = p8; l = ll; }
+
+  vec3 qqq = pos - c * qq;
+  return sdSphere(qqq, 0.01);
 }
 
 // // https://iquilezles.org/articles/normalsSDF
