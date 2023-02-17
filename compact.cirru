@@ -10,8 +10,6 @@
           defatom *store $ {}
             :tab $ turn-keyword (get-env "\"tab" "\"axis")
             :states $ {}
-        |canvas $ quote
-          def canvas $ js/document.querySelector "\"canvas"
         |dispatch! $ quote
           defn dispatch! (op data)
             when dev? $ js/console.log "\"Dispatch:" op data
@@ -33,10 +31,10 @@
           defn main! ()
             if dev? $ load-console-formatter!
             twgl/setDefaults $ js-object (:attribPrefix "\"a_")
-            reset! *gl-context $ .!getContext canvas "\"webgl"
             render-control!
             start-control-loop! 10 on-control-event
-            set! js/window.onresize $ fn (e) (render-app!)
+            set! js/window.onresize $ fn (e) (reset-canvas-size!) (render-app!)
+            reset-canvas-size!
             render-app!
         |on-control-event $ quote
           defn on-control-event (elapsed states delta)
@@ -84,7 +82,7 @@
         |reload! $ quote
           defn reload! () $ if (nil? build-errors)
             do (render-app!) (replace-control-loop! 10 on-control-event)
-              set! js/window.onresize $ fn (e) (render-app!)
+              set! js/window.onresize $ fn (e) (reset-canvas-size!) (render-app!)
               hud! "\"ok~" "\"OK"
             hud! "\"error" build-errors
         |render-app! $ quote
@@ -93,6 +91,8 @@
               fs $ inline-shader "\"rhombus.frag"
               gl @*gl-context
               program-info $ cached-build-program gl vs fs
+              scaled-width $ * dpr js/window.innerWidth
+              scaled-height $ * dpr js/window.innerHeight
               arrays $ let
                   arr $ js-object
                     :position $ .!createAugmentedTypedArray twgl/primitives 2 6
@@ -102,27 +102,33 @@
                 , arr
               buffer-info $ twgl/createBufferInfoFromArrays gl arrays
               uniforms $ js-object
-                :u_screen_resolution $ js-array (* dpr js/window.innerWidth) (* dpr js/window.innerHeight)
+                :u_screen_resolution $ js-array scaled-width scaled-height
                 :u_time $ * 0.001 (js/performance.now)
                 :forward $ to-js-data @*viewer-forward
                 :upward $ to-js-data @*viewer-upward
                 :viewer_position $ do (to-js-data @*viewer-position) (; js-array 0 0 0)
-            twgl/resizeCanvasToDisplaySize $ .-canvas gl
-            .!viewport gl 0 0 (-> gl .-canvas .-width) (-> gl .-canvas .-height)
+            twgl/resizeCanvasToDisplaySize (.-canvas gl) dpr
             .!enable gl $ .-DEPTH_TEST gl
             .!enable gl $ .-CULL_FACE gl
+            .!viewport gl 0 0 scaled-width scaled-height
             .!clearColor gl 0 0 0 1
             .!clear gl $ bit-or (.-COLOR_BUFFER_BIT gl) (.-DEPTH_BUFFER_BIT gl)
             .!useProgram gl $ .-program program-info
             twgl/setBuffersAndAttributes gl program-info buffer-info
             twgl/setUniforms program-info uniforms
             twgl/drawBufferInfo gl buffer-info $ .-TRIANGLES gl
+        |reset-canvas-size! $ quote
+          defn reset-canvas-size! ()
+            ; -> canvas .-width $ set! (&* dpr js/window.innerWidth)
+            ; -> canvas .-height $ set! (&* dpr js/window.innerHeight)
+            -> canvas .-style .-width $ set! (str js/window.innerWidth "\"px")
+            -> canvas .-style .-height $ set! (str js/window.innerHeight "\"px")
       :ns $ quote
         ns sapium.app.main $ :require ("\"./calcit.build-errors" :default build-errors) ("\"bottom-tip" :default hud!)
           sapium.config :refer $ dev? dpr inline-shader cached-build-program
           "\"twgl.js" :as twgl
           touch-control.core :refer $ render-control! start-control-loop! replace-control-loop!
-          sapium.global :refer $ *gl-context
+          sapium.global :refer $ *gl-context canvas
           memof.once :refer $ reset-memof1-caches!
           sapium.perspective :refer $ *viewer-position *viewer-forward *viewer-upward transform-3d new-lookat-point move-viewer-by! rotate-glance-by! spin-glance-by!
     |sapium.config $ {}
@@ -164,7 +170,10 @@
           sapium.$meta :refer $ calcit-dirname
     |sapium.global $ {}
       :defs $ {}
-        |*gl-context $ quote (defatom *gl-context nil)
+        |*gl-context $ quote
+          defatom *gl-context $ .!getContext canvas "\"webgl"
+        |canvas $ quote
+          def canvas $ js/document.querySelector "\"canvas"
       :ns $ quote (ns sapium.global)
     |sapium.math $ {}
       :defs $ {}
