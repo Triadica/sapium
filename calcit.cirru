@@ -10,29 +10,6 @@
   :files $ {}
     'sapium.app.main $ %{} 'FileEntry
       :defs $ {}
-        '*store $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *store
-            {}
-              :tab $ turn-keyword $ get-env |tab |axis
-              :states $ {}
-          :examples $ []
-        'dispatch! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn dispatch! (op data)
-            when dev? $ js/console.log |Dispatch: op data
-            if (= op :city-spin)
-              do $ swap! *dirty-uniforms update :spin-city $ fn (x)
-                + x $ * 0.01 data
-              let
-                  store @*store
-                  next $ if (list? op)
-                    update-states store $ [] op data
-                    case-default op
-                      do (js/console.warn "|unknown op" op) nil
-                      :cube-right $ update store :v inc
-                      :tab-focus $ assoc store :tab data
-                      :move-p1 $ assoc store :p1 data
-                if (some? next) (reset! *store next)
-          :examples $ []
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
             if dev? $ load-console-formatter!
@@ -114,9 +91,11 @@
                 uniforms $ js-object
                   :u_screen_resolution $ js-array scaled-width scaled-height
                   :u_time $ * 0.001 $ js/performance.now
-                  :forward $ to-js-data @*viewer-forward
-                  :upward $ to-js-data @*viewer-upward
-                  :viewer_position $ do (to-js-data @*viewer-position) (; js-array 0 0 0)
+                  :forward $ to-js-data $ v3-coordinates @*viewer-forward
+                  :upward $ to-js-data $ v3-coordinates @*viewer-upward
+                  :viewer_position $ do
+                    to-js-data $ v3-coordinates @*viewer-position
+                    ; js-array 0 0 0
               twgl/resizeCanvasToDisplaySize (.-canvas gl) dpr
               .!enable gl $ .-DEPTH_TEST gl
               .!enable gl $ .-CULL_FACE gl
@@ -142,7 +121,7 @@
             |twgl.js :as twgl
             touch-control.core :refer $ render-control! start-control-loop! replace-control-loop!
             sapium.global :refer $ *gl-context canvas
-            sapium.perspective :refer $ *viewer-position *viewer-forward *viewer-upward transform-3d new-lookat-point move-viewer-by! rotate-glance-by! spin-glance-by!
+            sapium.perspective :refer $ *viewer-position *viewer-forward *viewer-upward move-viewer-by! rotate-glance-by! spin-glance-by! v3-coordinates
     'sapium.config $ %{} 'FileEntry
       :defs $ {}
         '*shader-programs $ %{} 'CodeEntry (:doc |)
@@ -250,22 +229,27 @@
     'sapium.perspective $ %{} 'FileEntry
       :defs $ {}
         '*viewer-forward $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *viewer-forward ([] 0 0 -1)
+          :code $ quote $ defref *viewer-forward (v3 0 0 -1)
           :examples $ []
+          :schema $ :: 'Ref 'quaternion.vector/V3
         '*viewer-position $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *viewer-position ([] 0 1 4)
+          :code $ quote $ defref *viewer-position (v3 0 1 4)
           :examples $ []
+          :schema $ :: 'Ref 'quaternion.vector/V3
         '*viewer-upward $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *viewer-upward ([] 0 1 0)
+          :code $ quote $ defref *viewer-upward (v3 0 1 0)
           :examples $ []
+          :schema $ :: 'Ref 'quaternion.vector/V3
         'move-viewer-by! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn move-viewer-by! (x0 y0 z0)
             let
                 dv $ to-viewer-axis x0 y0 z0
                 position @*viewer-position
               reset! *viewer-position $ &v+ position dv
-              ; println ([] x0 y0 z0) |=> $ [] dx dy dz
+            , &unit
           :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ [] 'Number 'Number 'Number
         'rotate-glance-by! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn rotate-glance-by! (x y)
             if (not= x 0)
@@ -275,20 +259,23 @@
                   upward @*viewer-upward
                   rightward $ v-cross upward forward
                 reset! *viewer-forward $ &v+
-                  v-scale forward $ js/Math.cos da
-                  v-scale rightward $ js/Math.sin da
+                  v-scale forward $ cos da
+                  v-scale rightward $ sin da
             if (not= y 0)
               let
                   da $ * y 0.1
                   forward @*viewer-forward
                   upward @*viewer-upward
                 reset! *viewer-forward $ &v+
-                  v-scale forward $ js/Math.cos da
-                  v-scale upward $ js/Math.sin da
+                  v-scale forward $ cos da
+                  v-scale upward $ sin da
                 reset! *viewer-upward $ &v+
-                  v-scale upward $ js/Math.cos da
-                  v-scale forward $ negate $ js/Math.sin da
+                  v-scale upward $ cos da
+                  v-scale forward $ negate $ sin da
+            , &unit
           :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ [] 'Number 'Number
         'spin-glance-by! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn spin-glance-by! (v)
             if (not= v 0)
@@ -298,12 +285,14 @@
                   upward @*viewer-upward
                   rightward $ v-cross upward forward
                 reset! *viewer-upward $ &v+
-                  v-scale upward $ js/Math.cos da
-                  v-scale rightward $ js/Math.sin da
+                  v-scale upward $ cos da
+                  v-scale rightward $ sin da
+            , &unit
           :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ [] 'Number
         'to-viewer-axis $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn to-viewer-axis (x y z)
-            ; "|converting from WebGL coordinate to object coordinate"
             let
                 forward @*viewer-forward
                 upward @*viewer-upward
@@ -314,6 +303,17 @@
                   v-scale upward y
                 v-scale forward $ negate z
           :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'quaternion.vector/V3)
+            :args $ [] 'Number 'Number 'Number
+        'v3-coordinates $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn v3-coordinates (v)
+            match v $
+              :v3 x y z
+              [] x y z
+          :examples $ []
+          :schema $ :: 'Fn $ {}
+            :args $ [] 'quaternion.vector/V3
+            :return $ :: 'List 'Number
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns sapium.perspective
-          :require $ quaternion.core :refer $ v-cross v-scale v-dot &v- &v+
+          :require $ quaternion.vector :refer $ V3 v3 v-cross v-scale &v+
