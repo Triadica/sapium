@@ -10,6 +10,36 @@
   :files $ {}
     'sapium.app.main $ %{} 'FileEntry
       :defs $ {}
+        'AugmentedArrayHost $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ deftrait AugmentedArrayHost
+            .push $ :: 'Fn $ {} (:return 'Unit)
+              :args $ [] 'sapium.app.main/AugmentedArrayHost 'JsObject
+          :examples $ []
+          :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
+          :schema $ :: 'Trait
+        'PrimitivesHost $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ deftrait PrimitivesHost
+            .create-augmented-typed-array $ :: 'Fn $ {} (:return 'sapium.app.main/AugmentedArrayHost)
+              :args $ [] 'sapium.app.main/PrimitivesHost 'Number 'Number
+          :examples $ []
+          :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
+          :schema $ :: 'Trait
+        'WebGLHost $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ deftrait WebGLHost (:canvas 'js-ffi.browser/DomElementHost) (:depth-test 'Number) (:cull-face 'Number) (:color-buffer-bit 'Number) (:depth-buffer-bit 'Number) (:triangles 'Number)
+            .enable $ :: 'Fn $ {} (:return 'Unit)
+              :args $ [] 'sapium.app.main/WebGLHost 'Number
+            .viewport $ :: 'Fn $ {} (:return 'Unit)
+              :args $ [] 'sapium.app.main/WebGLHost 'Number 'Number 'Number 'Number
+            .clear-color $ :: 'Fn $ {} (:return 'Unit)
+              :args $ [] 'sapium.app.main/WebGLHost 'Number 'Number 'Number 'Number
+            .clear $ :: 'Fn $ {} (:return 'Unit)
+              :args $ [] 'sapium.app.main/WebGLHost 'Number
+            .use-program $ :: 'Fn $ {} (:return 'Unit)
+              :args $ [] 'sapium.app.main/WebGLHost 'JsObject
+          :examples $ []
+          :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
+            :names $ {} (:color-buffer-bit |COLOR_BUFFER_BIT) (:cull-face |CULL_FACE) (:depth-buffer-bit |DEPTH_BUFFER_BIT) (:depth-test |DEPTH_TEST) (:triangles |TRIANGLES)
+          :schema $ :: 'Trait
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
             if dev? $ load-console-formatter!
@@ -20,48 +50,45 @@
             reset-canvas-size!
             render-app!
           :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ []
+            :features $ #{} :js-ffi
         'on-control-event $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn on-control-event (elapsed states delta)
+          :code $ quote $ defn on-control-event (elapsed states _delta)
             let
                 l-move $ map (:left-move states) refine-strength
                 r-move $ map (:right-move states) refine-strength
-                r-delta $ :right-move delta
-                l-delta $ :left-move delta
-                left-a? $ :left-a? states
+                lx $ .unwrap $ .get l-move 0
+                ly $ .unwrap $ .get l-move 1
+                rx $ .unwrap $ .get r-move 0
+                ry $ .unwrap $ .get r-move 1
                 right-a? $ or (:right-a? states) (:shift? states)
-                right-b? $ :right-b? states
-                left-b? $ :left-b? states
-              ; println |L l-move |R r-move
-              when
-                not= 0 $ nth l-move 1
-                move-viewer-by! 0 0 $ negate $ * 2 elapsed (nth l-move 1)
-              when
-                not= 0 $ nth l-move 0
-                rotate-glance-by!
-                  * -0.5 elapsed $ nth l-move 0
-                  , 0
+              when (not= 0 ly)
+                move-viewer-by! 0 0 $ negate $ * 2 elapsed ly
+              when (not= 0 lx)
+                rotate-glance-by! (* -0.5 elapsed lx) 0
               when
                 and (not right-a?)
                   not= ([] 0 0) r-move
-                move-viewer-by!
-                  * 2 elapsed $ nth r-move 0
-                  * 2 elapsed $ nth r-move 1
-                  , 0
+                move-viewer-by! (* 2 elapsed rx) (* 2 elapsed ry) 0
               when
-                and right-a? $ not= 0 $ nth r-move 1
-                rotate-glance-by! 0 $ * 0.5 (nth r-move 1) elapsed
+                and right-a? $ not= 0 ry
+                rotate-glance-by! 0 $ * 0.5 ry elapsed
               when
-                and right-a? $ not= 0 $ nth r-move 0
-                spin-glance-by! $ * -0.5 (nth r-move 0) elapsed
+                and right-a? $ not= 0 rx
+                spin-glance-by! $ * -0.5 rx elapsed
               when
                 or
                   not= l-move $ [] 0 0
                   not= r-move $ [] 0 0
                 render-app!
+            , &unit
           :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ [] 'Number 'touch-control.core/ControlState 'touch-control.core/ControlDelta
         'refine-strength $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn refine-strength (x)
-            &* x 0.1 $ sqrt $ expect-number |Math.abs
+            * x 0.1 $ sqrt $ expect-number |Math.abs
               js/Math.abs $ &* x 0.01
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
@@ -75,42 +102,49 @@
                 hud! |ok~ |OK
               hud! |error build-errors
           :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ []
+            :features $ #{} :js-ffi
         'render-app! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-app! ()
             let
                 vs $ inline-shader |rhombus.vert
                 fs $ inline-shader |rhombus.frag
-                gl @*gl-context
-                program-info $ cached-build-program gl vs fs
-                scaled-width $ * dpr js/window.innerWidth
-                scaled-height $ * dpr js/window.innerHeight
-                arrays $ let
-                    arr $ js-object
-                      :position $ .!createAugmentedTypedArray twgl/primitives 2 6
-                      :uv $ .!createAugmentedTypedArray twgl/primitives 2 6
-                  .!push (.-position arr) -1 -1 1 -1 -1 1 -1 1 1 -1 1 1
-                  .!push (.-uv arr) 0 0 1 0 0 1 0 1 1 0 1 1
-                  , arr
-                buffer-info $ twgl/createBufferInfoFromArrays gl arrays
-                uniforms $ js-object
-                  :u_screen_resolution $ js-array scaled-width scaled-height
-                  :u_time $ * 0.001 $ js/performance.now
-                  :forward $ to-js-data $ v3-coordinates @*viewer-forward
-                  :upward $ to-js-data $ v3-coordinates @*viewer-upward
-                  :viewer_position $ do
-                    to-js-data $ v3-coordinates @*viewer-position
-                    ; js-array 0 0 0
-              twgl/resizeCanvasToDisplaySize (.-canvas gl) dpr
-              .!enable gl $ .-DEPTH_TEST gl
-              .!enable gl $ .-CULL_FACE gl
-              .!viewport gl 0 0 scaled-width scaled-height
-              .!clearColor gl 0 0 0 1
-              .!clear gl $ bit-or (.-COLOR_BUFFER_BIT gl) (.-DEPTH_BUFFER_BIT gl)
-              .!useProgram gl $ .-program program-info
-              twgl/setBuffersAndAttributes gl program-info buffer-info
-              twgl/setUniforms program-info uniforms
-              twgl/drawBufferInfo gl buffer-info $ .-TRIANGLES gl
+                gl-raw @*gl-context
+                gl $ js-cast gl-raw 'sapium.app.main/WebGLHost
+                host-window $ window-host
+                program-info $ cached-build-program gl-raw vs fs
+                scaled-width $ * dpr $ host-window :inner-width
+                scaled-height $ * dpr $ host-window :inner-height
+                primitives $ js-cast twgl/primitives 'sapium.app.main/PrimitivesHost
+                position $ primitives .create-augmented-typed-array 2 6
+                uv $ primitives .create-augmented-typed-array 2 6
+              position .push $ js-array -1 -1 1 -1 -1 1 -1 1 1 -1 1 1
+              uv .push $ js-array 0 0 1 0 0 1 0 1 1 0 1 1
+              let
+                  arrays $ js-object (:position position) (:uv uv)
+                  buffer-info $ twgl/createBufferInfoFromArrays gl-raw arrays
+                  uniforms $ js-object
+                    :u_screen_resolution $ js-array scaled-width scaled-height
+                    :u_time $ * 0.001 $ performance-now
+                    :forward $ to-js-data $ v3-coordinates @*viewer-forward
+                    :upward $ to-js-data $ v3-coordinates @*viewer-upward
+                    :viewer_position $ to-js-data $ v3-coordinates @*viewer-position
+                twgl/resizeCanvasToDisplaySize (gl :canvas) dpr
+                gl .enable $ gl :depth-test
+                gl .enable $ gl :cull-face
+                gl .viewport 0 0 scaled-width scaled-height
+                gl .clear-color 0 0 0 1
+                gl .clear $ bit-or (gl :color-buffer-bit) (gl :depth-buffer-bit)
+                gl .use-program $ program-info :program
+                twgl/setBuffersAndAttributes gl-raw program-info buffer-info
+                twgl/setUniforms program-info uniforms
+                twgl/drawBufferInfo gl-raw buffer-info $ gl :triangles
+            , &unit
           :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ []
+            :features $ #{} :js-ffi
         'reset-canvas-size! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reset-canvas-size! ()
             let
@@ -132,6 +166,7 @@
             sapium.perspective :refer $ *viewer-position *viewer-forward *viewer-upward move-viewer-by! rotate-glance-by! spin-glance-by! v3-coordinates
             js-ffi.contract :refer $ expect-number
             js-ffi.browser :refer $ window-host element-set-style!
+            js-ffi.shared :refer $ performance-now
     'sapium.config $ %{} 'FileEntry
       :defs $ {}
         '*shader-programs $ %{} 'CodeEntry (:doc |)
@@ -154,6 +189,7 @@
         'back-cone-scale $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def back-cone-scale 1
           :examples $ []
+          :schema $ :: 'Number
         'cached-build-program $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn cached-build-program (gl vs fs)
             let
@@ -180,6 +216,7 @@
           :code $ quote $ def dev?
             = |dev $ .unwrap-or (get-env |mode) |release
           :examples $ []
+          :schema $ :: 'Bool
         'dpr $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def dpr (read-dpr)
           :examples $ []
@@ -187,10 +224,12 @@
         'half-pi $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def half-pi (* 0.5 &PI)
           :examples $ []
+          :schema $ :: 'Number
         'hide-tabs? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def hide-tabs?
             = |true $ .unwrap-or (get-env |hide-tabs) |false
           :examples $ []
+          :schema $ :: 'Bool
         'inline-shader $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defmacro inline-shader (name)
             let
@@ -240,7 +279,7 @@
           :examples $ []
           :schema $ :: 'Ref 'JsObject
         'CanvasHost $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ deftrait CanvasHost (requires js-ffi.browser/DomElementHost)
+          :code $ quote $ deftrait CanvasHost
             .get-context $ :: 'Fn $ {}
               :return $ :: 'JsNullish 'JsObject
               :args $ [] 'sapium.global/CanvasHost 'String
