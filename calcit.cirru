@@ -61,8 +61,12 @@
           :examples $ []
         'refine-strength $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn refine-strength (x)
-            &* x 0.1 $ sqrt $ js/Math.abs (&* x 0.01)
+            &* x 0.1 $ sqrt $ expect-number |Math.abs
+              js/Math.abs $ &* x 0.01
           :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Number)
+            :args $ [] 'Number
+            :features $ #{} :js-ffi
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! ()
             if (nil? build-errors)
@@ -109,11 +113,15 @@
           :examples $ []
         'reset-canvas-size! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reset-canvas-size! ()
-            ; -> canvas .-width $ set! $ &* dpr js/window.innerWidth
-            ; -> canvas .-height $ set! $ &* dpr js/window.innerHeight
-            -> canvas .-style .-width $ set! $ str js/window.innerWidth |px
-            -> canvas .-style .-height $ set! $ str js/window.innerHeight |px
+            let
+                host $ window-host
+              element-set-style! canvas |width $ str (host :inner-width) |px
+              element-set-style! canvas |height $ str (host :inner-height) |px
+            , &unit
           :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ []
+            :features $ #{} :js-ffi
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns sapium.app.main
           :require (|./calcit.build-errors :default build-errors) (|bottom-tip :default hud!)
@@ -122,11 +130,27 @@
             touch-control.core :refer $ render-control! start-control-loop! replace-control-loop!
             sapium.global :refer $ *gl-context canvas
             sapium.perspective :refer $ *viewer-position *viewer-forward *viewer-upward move-viewer-by! rotate-glance-by! spin-glance-by! v3-coordinates
+            js-ffi.contract :refer $ expect-number
+            js-ffi.browser :refer $ window-host element-set-style!
     'sapium.config $ %{} 'FileEntry
       :defs $ {}
         '*shader-programs $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *shader-programs ({})
+          :code $ quote $ defref *shader-programs ({})
           :examples $ []
+          :schema $ :: 'Ref $ :: 'Map 'String 'sapium.config/ProgramInfoHost
+        'MobileDetectHost $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ deftrait MobileDetectHost
+            .mobile $ :: 'Fn $ {}
+              :return $ :: 'JsNullish 'String
+              :args $ [] 'sapium.config/MobileDetectHost
+          :examples $ []
+          :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
+          :schema $ :: 'Trait
+        'ProgramInfoHost $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ deftrait ProgramInfoHost (:program 'JsObject)
+          :examples $ []
+          :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
+          :schema $ :: 'Trait
         'back-cone-scale $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def back-cone-scale 1
           :examples $ []
@@ -135,20 +159,31 @@
             let
                 caches @*shader-programs
                 field $ str vs &newline |@@@@@@ &newline fs
-              if (&map:contains? caches field) (&map:get caches field)
+              if (&map:contains? caches field)
+                .unwrap $ .get caches field
                 let
-                    program $ twgl/createProgramInfo gl $ js-array vs fs
-                  if (nil? program) (raise "|Failed to compile shader")
-                  swap! *shader-programs assoc field program
-                  , program
+                    build $ unsafe-coerce twgl/createProgramInfo $ :: 'Fn
+                      {}
+                        :return $ :: 'JsNullish 'JsObject
+                        :args $ [] 'JsObject 'JsObject
+                    raw $ build gl $ js-array vs fs
+                  if (js-nullish? raw) (raise "|Failed to compile shader")
+                  let
+                      program $ js-cast raw 'sapium.config/ProgramInfoHost
+                    swap! *shader-programs assoc field program
+                    , program
           :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'sapium.config/ProgramInfoHost)
+            :args $ [] 'JsObject 'String 'String
+            :features $ #{} :js-ffi
         'dev? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def dev?
             = |dev $ .unwrap-or (get-env |mode) |release
           :examples $ []
         'dpr $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ def dpr js/window.devicePixelRatio
+          :code $ quote $ def dpr (read-dpr)
           :examples $ []
+          :schema $ :: 'Number
         'half-pi $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def half-pi (* 0.5 &PI)
           :examples $ []
@@ -167,27 +202,76 @@
               read-file shader
           :examples $ []
           :schema $ :: 'Macro $ {}
-            :capabilities $ #{}
-            :expansion $ :: 'Expr 'Dynamic
+            :capabilities $ #{} :fs-read :log
+            :expansion $ :: 'Expr 'String
             :required $ [] 'Syntax
         'mobile? $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ def mobile?
-            .!mobile $ new mobile-detect js/window.navigator.userAgent
+          :code $ quote $ def mobile? (read-mobile)
           :examples $ []
+          :schema $ :: 'Option 'String
+        'read-dpr $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn read-dpr () (expect-number |devicePixelRatio js/window.devicePixelRatio)
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Number)
+            :args $ []
+            :features $ #{} :js-ffi
+        'read-mobile $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn read-mobile ()
+            let
+                host $ js-cast
+                  new mobile-detect $ user-agent
+                  , 'sapium.config/MobileDetectHost
+              js-nullish->option $ host .mobile
+          :examples $ []
+          :schema $ :: 'Fn $ {}
+            :args $ []
+            :features $ #{} :js-ffi
+            :return $ :: 'Option 'String
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns sapium.config
           :require (|mobile-detect :default mobile-detect) (|twgl.js :as twgl)
             sapium.$meta :refer $ calcit-dirname
+            js-ffi.contract :refer $ expect-number
+            js-ffi.browser :refer $ user-agent
     'sapium.global $ %{} 'FileEntry
       :defs $ {}
         '*gl-context $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *gl-context (.!getContext canvas |webgl)
+          :code $ quote $ defref *gl-context (read-gl-context)
           :examples $ []
+          :schema $ :: 'Ref 'JsObject
+        'CanvasHost $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ deftrait CanvasHost (requires js-ffi.browser/DomElementHost)
+            .get-context $ :: 'Fn $ {}
+              :return $ :: 'JsNullish 'JsObject
+              :args $ [] 'sapium.global/CanvasHost 'String
+          :examples $ []
+          :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
+          :schema $ :: 'Trait
         'canvas $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ def canvas (js/document.querySelector |canvas)
+          :code $ quote $ def canvas (read-canvas)
           :examples $ []
+          :schema $ :: 'js-ffi.browser/DomElementHost
+        'read-canvas $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn read-canvas ()
+            .unwrap $ query-selector |canvas
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'js-ffi.browser/DomElementHost)
+            :args $ []
+        'read-gl-context $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn read-gl-context ()
+            let
+                host $ js-cast canvas 'sapium.global/CanvasHost
+                gl $ host .get-context |webgl
+              if (js-nullish? gl) (raise |WebGL-unavailable) (expect-object |WebGL gl)
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'JsObject)
+            :args $ []
+            :features $ #{} :js-ffi
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns sapium.global
+          :require
+            js-ffi.browser :refer $ query-selector DomElementHost
+            js-ffi.contract :refer $ expect-object
     'sapium.math $ %{} 'FileEntry
       :defs $ {}
         '&v+ $ %{} 'CodeEntry (:doc |)
