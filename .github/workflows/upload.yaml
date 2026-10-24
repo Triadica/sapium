@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - prepare/sapium-formal031
   pull_request: {}
 
 permissions:
@@ -32,15 +33,22 @@ jobs:
         corepack prepare yarn@4.18.0 --activate
 
     - uses: calcit-lang/setup-calcit@ca701be5a471759e442aa053cd100720bbe1f09f # v1.5
+      with:
+        tools: calcit,caps
+        deps-file: deps.cirru
+        caps-version: "0.1.1"
 
     - name: Install formal dependencies
       run: caps --strict --ci && yarn install --immutable && caps verify --toolchain
 
     - name: Check canonical snapshot and types
       run: |
+        set -euo pipefail
+        node acceptance/prepare.mjs
         calcit calcit.cirru edit format
-        git diff --exit-code -- calcit.cirru
+        test "$(git hash-object calcit.cirru)" = "$(cat acceptance/snapshot-blob.txt)"
         calcit calcit.cirru --check-only --all-defs --strict-types
+        calcit fix --workflow strict --verify --format json | jq -e 'if .data.workflow.status == "passed" and .diagnostics == [] then true else ., false end'
 
     - name: Compile and build frontend
       run: calcit calcit.cirru js && yarn vite build --base="https://cos-sh.tiye.me/${GITHUB_REPOSITORY}/"
@@ -102,3 +110,15 @@ jobs:
     - name: Display status from deploy
       if: steps.page-revision.outputs.current == 'true'
       run: echo "${{ steps.deploy.outputs.status }}"
+
+    - name: Preserve official prepared source and frontend
+      if: always()
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      with:
+        name: sapium-prepared
+        path: |
+          calcit.cirru
+          acceptance/
+          js-out/
+          dist/
+        retention-days: 7

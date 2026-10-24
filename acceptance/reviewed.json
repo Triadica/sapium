@@ -1,0 +1,2938 @@
+[
+  {
+    "code": [
+      "def",
+      "calcit-dirname",
+      "|"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.$meta/calcit-dirname",
+    "js_ffi": null,
+    "schema": null,
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "calcit-filename",
+      "|calcit.cirru"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.$meta/calcit-filename",
+    "js_ffi": null,
+    "schema": null,
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "deftrait",
+      "AugmentedArrayHost",
+      [
+        ".push",
+        [
+          "::",
+          "'Fn",
+          [
+            "{}",
+            [
+              ":return",
+              "'Unit"
+            ],
+            [
+              ":args",
+              [
+                "[]",
+                "'sapium.app.main/AugmentedArrayHost",
+                "'JsObject"
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": {
+      ":backend": {
+        "__edn_tag": "js"
+      },
+      ":kind": {
+        "__edn_tag": "external-object"
+      },
+      ":target": {
+        "__edn_tag": "browser"
+      }
+    },
+    "ffi_edn": "{} (:backend :js) (:kind :external-object) (:target :browser)",
+    "id": "sapium.app.main/AugmentedArrayHost",
+    "js_ffi": null,
+    "schema": "'Trait",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "deftrait",
+      "PrimitivesHost",
+      [
+        ".create-augmented-typed-array",
+        [
+          "::",
+          "'Fn",
+          [
+            "{}",
+            [
+              ":return",
+              "'sapium.app.main/AugmentedArrayHost"
+            ],
+            [
+              ":args",
+              [
+                "[]",
+                "'sapium.app.main/PrimitivesHost",
+                "'Number",
+                "'Number"
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": {
+      ":backend": {
+        "__edn_tag": "js"
+      },
+      ":kind": {
+        "__edn_tag": "external-object"
+      },
+      ":target": {
+        "__edn_tag": "browser"
+      }
+    },
+    "ffi_edn": "{} (:backend :js) (:kind :external-object) (:target :browser)",
+    "id": "sapium.app.main/PrimitivesHost",
+    "js_ffi": null,
+    "schema": "'Trait",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "deftrait",
+      "WebGLHost",
+      [
+        ":canvas",
+        "'js-ffi.browser/DomElementHost"
+      ],
+      [
+        ":depth-test",
+        "'Number"
+      ],
+      [
+        ":cull-face",
+        "'Number"
+      ],
+      [
+        ":color-buffer-bit",
+        "'Number"
+      ],
+      [
+        ":depth-buffer-bit",
+        "'Number"
+      ],
+      [
+        ":triangles",
+        "'Number"
+      ],
+      [
+        ".enable",
+        [
+          "::",
+          "'Fn",
+          [
+            "{}",
+            [
+              ":return",
+              "'Unit"
+            ],
+            [
+              ":args",
+              [
+                "[]",
+                "'sapium.app.main/WebGLHost",
+                "'Number"
+              ]
+            ]
+          ]
+        ]
+      ],
+      [
+        ".viewport",
+        [
+          "::",
+          "'Fn",
+          [
+            "{}",
+            [
+              ":return",
+              "'Unit"
+            ],
+            [
+              ":args",
+              [
+                "[]",
+                "'sapium.app.main/WebGLHost",
+                "'Number",
+                "'Number",
+                "'Number",
+                "'Number"
+              ]
+            ]
+          ]
+        ]
+      ],
+      [
+        ".clear-color",
+        [
+          "::",
+          "'Fn",
+          [
+            "{}",
+            [
+              ":return",
+              "'Unit"
+            ],
+            [
+              ":args",
+              [
+                "[]",
+                "'sapium.app.main/WebGLHost",
+                "'Number",
+                "'Number",
+                "'Number",
+                "'Number"
+              ]
+            ]
+          ]
+        ]
+      ],
+      [
+        ".clear",
+        [
+          "::",
+          "'Fn",
+          [
+            "{}",
+            [
+              ":return",
+              "'Unit"
+            ],
+            [
+              ":args",
+              [
+                "[]",
+                "'sapium.app.main/WebGLHost",
+                "'Number"
+              ]
+            ]
+          ]
+        ]
+      ],
+      [
+        ".use-program",
+        [
+          "::",
+          "'Fn",
+          [
+            "{}",
+            [
+              ":return",
+              "'Unit"
+            ],
+            [
+              ":args",
+              [
+                "[]",
+                "'sapium.app.main/WebGLHost",
+                "'JsObject"
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": {
+      ":backend": {
+        "__edn_tag": "js"
+      },
+      ":kind": {
+        "__edn_tag": "external-object"
+      },
+      ":names": {
+        ":color-buffer-bit": "COLOR_BUFFER_BIT",
+        ":cull-face": "CULL_FACE",
+        ":depth-buffer-bit": "DEPTH_BUFFER_BIT",
+        ":depth-test": "DEPTH_TEST",
+        ":triangles": "TRIANGLES"
+      },
+      ":target": {
+        "__edn_tag": "browser"
+      }
+    },
+    "ffi_edn": "{} (:backend :js) (:kind :external-object) (:target :browser)\n  :names $ {} (:color-buffer-bit |COLOR_BUFFER_BIT) (:cull-face |CULL_FACE) (:depth-buffer-bit |DEPTH_BUFFER_BIT) (:depth-test |DEPTH_TEST) (:triangles |TRIANGLES)",
+    "id": "sapium.app.main/WebGLHost",
+    "js_ffi": null,
+    "schema": "'Trait",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "main!",
+      [],
+      [
+        "if",
+        "dev?",
+        [
+          "load-console-formatter!"
+        ]
+      ],
+      [
+        "twgl/setDefaults",
+        [
+          "js-object",
+          [
+            ":attribPrefix",
+            "|a_"
+          ]
+        ]
+      ],
+      [
+        "render-control!"
+      ],
+      [
+        "start-control-loop!",
+        "10",
+        "on-control-event"
+      ],
+      [
+        "set!",
+        "js/window.onresize",
+        [
+          "fn",
+          [
+            "e"
+          ],
+          [
+            "reset-canvas-size!"
+          ],
+          [
+            "render-app!"
+          ]
+        ]
+      ],
+      [
+        "reset-canvas-size!"
+      ],
+      [
+        "render-app!"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.app.main/main!",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ],
+      [
+        ":features",
+        [
+          "#{}",
+          ":js-ffi"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "on-control-event",
+      [
+        "elapsed",
+        "states",
+        "_delta"
+      ],
+      [
+        "let",
+        [
+          [
+            "l-move",
+            [
+              "map",
+              [
+                ":left-move",
+                "states"
+              ],
+              "refine-strength"
+            ]
+          ],
+          [
+            "r-move",
+            [
+              "map",
+              [
+                ":right-move",
+                "states"
+              ],
+              "refine-strength"
+            ]
+          ],
+          [
+            "lx",
+            [
+              ".unwrap",
+              [
+                ".get",
+                "l-move",
+                "0"
+              ]
+            ]
+          ],
+          [
+            "ly",
+            [
+              ".unwrap",
+              [
+                ".get",
+                "l-move",
+                "1"
+              ]
+            ]
+          ],
+          [
+            "rx",
+            [
+              ".unwrap",
+              [
+                ".get",
+                "r-move",
+                "0"
+              ]
+            ]
+          ],
+          [
+            "ry",
+            [
+              ".unwrap",
+              [
+                ".get",
+                "r-move",
+                "1"
+              ]
+            ]
+          ],
+          [
+            "right-a?",
+            [
+              "or",
+              [
+                ":right-a?",
+                "states"
+              ],
+              [
+                ":shift?",
+                "states"
+              ]
+            ]
+          ]
+        ],
+        [
+          "when",
+          [
+            "not=",
+            "0",
+            "ly"
+          ],
+          [
+            "move-viewer-by!",
+            "0",
+            "0",
+            [
+              "negate",
+              [
+                "*",
+                "2",
+                "elapsed",
+                "ly"
+              ]
+            ]
+          ]
+        ],
+        [
+          "when",
+          [
+            "not=",
+            "0",
+            "lx"
+          ],
+          [
+            "rotate-glance-by!",
+            [
+              "*",
+              "-0.5",
+              "elapsed",
+              "lx"
+            ],
+            "0"
+          ]
+        ],
+        [
+          "when",
+          [
+            "and",
+            [
+              "not",
+              "right-a?"
+            ],
+            [
+              "not=",
+              [
+                "[]",
+                "0",
+                "0"
+              ],
+              "r-move"
+            ]
+          ],
+          [
+            "move-viewer-by!",
+            [
+              "*",
+              "2",
+              "elapsed",
+              "rx"
+            ],
+            [
+              "*",
+              "2",
+              "elapsed",
+              "ry"
+            ],
+            "0"
+          ]
+        ],
+        [
+          "when",
+          [
+            "and",
+            "right-a?",
+            [
+              "not=",
+              "0",
+              "ry"
+            ]
+          ],
+          [
+            "rotate-glance-by!",
+            "0",
+            [
+              "*",
+              "0.5",
+              "ry",
+              "elapsed"
+            ]
+          ]
+        ],
+        [
+          "when",
+          [
+            "and",
+            "right-a?",
+            [
+              "not=",
+              "0",
+              "rx"
+            ]
+          ],
+          [
+            "spin-glance-by!",
+            [
+              "*",
+              "-0.5",
+              "rx",
+              "elapsed"
+            ]
+          ]
+        ],
+        [
+          "when",
+          [
+            "or",
+            [
+              "not=",
+              "l-move",
+              [
+                "[]",
+                "0",
+                "0"
+              ]
+            ],
+            [
+              "not=",
+              "r-move",
+              [
+                "[]",
+                "0",
+                "0"
+              ]
+            ]
+          ],
+          [
+            "render-app!"
+          ]
+        ]
+      ],
+      "&unit"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.app.main/on-control-event",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'Number",
+          "'touch-control.core/ControlState",
+          "'touch-control.core/ControlDelta"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "refine-strength",
+      [
+        "x"
+      ],
+      [
+        "*",
+        "x",
+        "0.1",
+        [
+          "sqrt",
+          [
+            "expect-number",
+            "|Math.abs",
+            [
+              "js/Math.abs",
+              [
+                "&*",
+                "x",
+                "0.01"
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.app.main/refine-strength",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'Number"
+        ]
+      ],
+      [
+        ":features",
+        [
+          "#{}",
+          ":js-ffi"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "reload!",
+      [],
+      [
+        "if",
+        [
+          "nil?",
+          "build-errors"
+        ],
+        [
+          "do",
+          [
+            "render-app!"
+          ],
+          [
+            "replace-control-loop!",
+            "10",
+            "on-control-event"
+          ],
+          [
+            "set!",
+            "js/window.onresize",
+            [
+              "fn",
+              [
+                "e"
+              ],
+              [
+                "reset-canvas-size!"
+              ],
+              [
+                "render-app!"
+              ]
+            ]
+          ],
+          [
+            "hud!",
+            "|ok~",
+            "|OK"
+          ]
+        ],
+        [
+          "hud!",
+          "|error",
+          "build-errors"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.app.main/reload!",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ],
+      [
+        ":features",
+        [
+          "#{}",
+          ":js-ffi"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "render-app!",
+      [],
+      [
+        "let",
+        [
+          [
+            "vs",
+            [
+              "inline-shader",
+              "|rhombus.vert"
+            ]
+          ],
+          [
+            "fs",
+            [
+              "inline-shader",
+              "|rhombus.frag"
+            ]
+          ],
+          [
+            "gl-raw",
+            "@*gl-context"
+          ],
+          [
+            "gl",
+            [
+              "js-cast",
+              "gl-raw",
+              "'sapium.app.main/WebGLHost"
+            ]
+          ],
+          [
+            "host-window",
+            [
+              "window-host"
+            ]
+          ],
+          [
+            "program-info",
+            [
+              "cached-build-program",
+              "gl-raw",
+              "vs",
+              "fs"
+            ]
+          ],
+          [
+            "scaled-width",
+            [
+              "*",
+              "dpr",
+              [
+                "host-window",
+                ":inner-width"
+              ]
+            ]
+          ],
+          [
+            "scaled-height",
+            [
+              "*",
+              "dpr",
+              [
+                "host-window",
+                ":inner-height"
+              ]
+            ]
+          ],
+          [
+            "primitives",
+            [
+              "js-cast",
+              "twgl/primitives",
+              "'sapium.app.main/PrimitivesHost"
+            ]
+          ],
+          [
+            "position",
+            [
+              "primitives",
+              ".create-augmented-typed-array",
+              "2",
+              "6"
+            ]
+          ],
+          [
+            "uv",
+            [
+              "primitives",
+              ".create-augmented-typed-array",
+              "2",
+              "6"
+            ]
+          ]
+        ],
+        [
+          "position",
+          ".push",
+          [
+            "js-array",
+            "-1",
+            "-1",
+            "1",
+            "-1",
+            "-1",
+            "1",
+            "-1",
+            "1",
+            "1",
+            "-1",
+            "1",
+            "1"
+          ]
+        ],
+        [
+          "uv",
+          ".push",
+          [
+            "js-array",
+            "0",
+            "0",
+            "1",
+            "0",
+            "0",
+            "1",
+            "0",
+            "1",
+            "1",
+            "0",
+            "1",
+            "1"
+          ]
+        ],
+        [
+          "let",
+          [
+            [
+              "arrays",
+              [
+                "js-object",
+                [
+                  ":position",
+                  "position"
+                ],
+                [
+                  ":uv",
+                  "uv"
+                ]
+              ]
+            ],
+            [
+              "buffer-info",
+              [
+                "twgl/createBufferInfoFromArrays",
+                "gl-raw",
+                "arrays"
+              ]
+            ],
+            [
+              "uniforms",
+              [
+                "js-object",
+                [
+                  ":u_screen_resolution",
+                  [
+                    "js-array",
+                    "scaled-width",
+                    "scaled-height"
+                  ]
+                ],
+                [
+                  ":u_time",
+                  [
+                    "*",
+                    "0.001",
+                    [
+                      "performance-now"
+                    ]
+                  ]
+                ],
+                [
+                  ":forward",
+                  [
+                    "to-js-data",
+                    [
+                      "v3-coordinates",
+                      "@*viewer-forward"
+                    ]
+                  ]
+                ],
+                [
+                  ":upward",
+                  [
+                    "to-js-data",
+                    [
+                      "v3-coordinates",
+                      "@*viewer-upward"
+                    ]
+                  ]
+                ],
+                [
+                  ":viewer_position",
+                  [
+                    "to-js-data",
+                    [
+                      "v3-coordinates",
+                      "@*viewer-position"
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          [
+            "twgl/resizeCanvasToDisplaySize",
+            [
+              "gl",
+              ":canvas"
+            ],
+            "dpr"
+          ],
+          [
+            "gl",
+            ".enable",
+            [
+              "gl",
+              ":depth-test"
+            ]
+          ],
+          [
+            "gl",
+            ".enable",
+            [
+              "gl",
+              ":cull-face"
+            ]
+          ],
+          [
+            "gl",
+            ".viewport",
+            "0",
+            "0",
+            "scaled-width",
+            "scaled-height"
+          ],
+          [
+            "gl",
+            ".clear-color",
+            "0",
+            "0",
+            "0",
+            "1"
+          ],
+          [
+            "gl",
+            ".clear",
+            [
+              "bit-or",
+              [
+                "gl",
+                ":color-buffer-bit"
+              ],
+              [
+                "gl",
+                ":depth-buffer-bit"
+              ]
+            ]
+          ],
+          [
+            "gl",
+            ".use-program",
+            [
+              "program-info",
+              ":program"
+            ]
+          ],
+          [
+            "twgl/setBuffersAndAttributes",
+            "gl-raw",
+            "program-info",
+            "buffer-info"
+          ],
+          [
+            "twgl/setUniforms",
+            "program-info",
+            "uniforms"
+          ],
+          [
+            "twgl/drawBufferInfo",
+            "gl-raw",
+            "buffer-info",
+            [
+              "gl",
+              ":triangles"
+            ]
+          ]
+        ]
+      ],
+      "&unit"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.app.main/render-app!",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ],
+      [
+        ":features",
+        [
+          "#{}",
+          ":js-ffi"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "reset-canvas-size!",
+      [],
+      [
+        "let",
+        [
+          [
+            "host",
+            [
+              "window-host"
+            ]
+          ]
+        ],
+        [
+          "element-set-style!",
+          "canvas",
+          "|width",
+          [
+            "str",
+            [
+              "host",
+              ":inner-width"
+            ],
+            "|px"
+          ]
+        ],
+        [
+          "element-set-style!",
+          "canvas",
+          "|height",
+          [
+            "str",
+            [
+              "host",
+              ":inner-height"
+            ],
+            "|px"
+          ]
+        ]
+      ],
+      "&unit"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.app.main/reset-canvas-size!",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ],
+      [
+        ":features",
+        [
+          "#{}",
+          ":js-ffi"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defref",
+      "*shader-programs",
+      [
+        "{}"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.config/*shader-programs",
+    "js_ffi": null,
+    "schema": [
+      "::",
+      "'Ref",
+      [
+        "::",
+        "'Map",
+        "'String",
+        "'sapium.config/ProgramInfoHost"
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "deftrait",
+      "MobileDetectHost",
+      [
+        ".mobile",
+        [
+          "::",
+          "'Fn",
+          [
+            "{}",
+            [
+              ":return",
+              [
+                "::",
+                "'JsNullish",
+                "'String"
+              ]
+            ],
+            [
+              ":args",
+              [
+                "[]",
+                "'sapium.config/MobileDetectHost"
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": {
+      ":backend": {
+        "__edn_tag": "js"
+      },
+      ":kind": {
+        "__edn_tag": "external-object"
+      },
+      ":target": {
+        "__edn_tag": "browser"
+      }
+    },
+    "ffi_edn": "{} (:backend :js) (:kind :external-object) (:target :browser)",
+    "id": "sapium.config/MobileDetectHost",
+    "js_ffi": null,
+    "schema": "'Trait",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "deftrait",
+      "ProgramInfoHost",
+      [
+        ":program",
+        "'JsObject"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": {
+      ":backend": {
+        "__edn_tag": "js"
+      },
+      ":kind": {
+        "__edn_tag": "external-object"
+      },
+      ":target": {
+        "__edn_tag": "browser"
+      }
+    },
+    "ffi_edn": "{} (:backend :js) (:kind :external-object) (:target :browser)",
+    "id": "sapium.config/ProgramInfoHost",
+    "js_ffi": null,
+    "schema": "'Trait",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "back-cone-scale",
+      "1"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.config/back-cone-scale",
+    "js_ffi": null,
+    "schema": "'Number",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "cached-build-program",
+      [
+        "gl",
+        "vs",
+        "fs"
+      ],
+      [
+        "let",
+        [
+          [
+            "caches",
+            "@*shader-programs"
+          ],
+          [
+            "field",
+            [
+              "str",
+              "vs",
+              "&newline",
+              "|@@@@@@",
+              "&newline",
+              "fs"
+            ]
+          ]
+        ],
+        [
+          "if",
+          [
+            "&map:contains?",
+            "caches",
+            "field"
+          ],
+          [
+            ".unwrap",
+            [
+              ".get",
+              "caches",
+              "field"
+            ]
+          ],
+          [
+            "let",
+            [
+              [
+                "build",
+                [
+                  "unsafe-coerce",
+                  "twgl/createProgramInfo",
+                  [
+                    "::",
+                    "'Fn",
+                    [
+                      "{}",
+                      [
+                        ":return",
+                        [
+                          "::",
+                          "'JsNullish",
+                          "'JsObject"
+                        ]
+                      ],
+                      [
+                        ":args",
+                        [
+                          "[]",
+                          "'JsObject",
+                          "'JsObject"
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "raw",
+                [
+                  "build",
+                  "gl",
+                  [
+                    "js-array",
+                    "vs",
+                    "fs"
+                  ]
+                ]
+              ]
+            ],
+            [
+              "if",
+              [
+                "js-nullish?",
+                "raw"
+              ],
+              [
+                "raise",
+                "|Failed to compile shader"
+              ]
+            ],
+            [
+              "let",
+              [
+                [
+                  "program",
+                  [
+                    "js-cast",
+                    "raw",
+                    "'sapium.config/ProgramInfoHost"
+                  ]
+                ]
+              ],
+              [
+                "swap!",
+                "*shader-programs",
+                "assoc",
+                "field",
+                "program"
+              ],
+              "program"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.config/cached-build-program",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'sapium.config/ProgramInfoHost"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'JsObject",
+          "'String",
+          "'String"
+        ]
+      ],
+      [
+        ":features",
+        [
+          "#{}",
+          ":js-ffi"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "dev?",
+      [
+        "=",
+        "|dev",
+        [
+          ".unwrap-or",
+          [
+            "get-env",
+            "|mode"
+          ],
+          "|release"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.config/dev?",
+    "js_ffi": null,
+    "schema": "'Bool",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "dpr",
+      [
+        "read-dpr"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.config/dpr",
+    "js_ffi": null,
+    "schema": "'Number",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "half-pi",
+      [
+        "*",
+        "0.5",
+        "&PI"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.config/half-pi",
+    "js_ffi": null,
+    "schema": "'Number",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "hide-tabs?",
+      [
+        "=",
+        "|true",
+        [
+          ".unwrap-or",
+          [
+            "get-env",
+            "|hide-tabs"
+          ],
+          "|false"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.config/hide-tabs?",
+    "js_ffi": null,
+    "schema": "'Bool",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defmacro",
+      "inline-shader",
+      [
+        "name"
+      ],
+      [
+        "let",
+        [
+          [
+            "shader",
+            [
+              "if",
+              [
+                "blank?",
+                "calcit-dirname"
+              ],
+              [
+                "str",
+                "|shaders/",
+                "name"
+              ],
+              [
+                "let",
+                [
+                  [
+                    "dir",
+                    [
+                      "if",
+                      [
+                        ".ends-with?",
+                        "calcit-dirname",
+                        "|/"
+                      ],
+                      "calcit-dirname",
+                      [
+                        "str",
+                        "calcit-dirname",
+                        "|/"
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "str",
+                  "dir",
+                  "|shaders/",
+                  "name"
+                ]
+              ]
+            ]
+          ]
+        ],
+        [
+          "println",
+          "|reading shader file:",
+          "name"
+        ],
+        [
+          "read-file",
+          "shader"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.config/inline-shader",
+    "js_ffi": null,
+    "schema": [
+      "::",
+      "'Macro",
+      [
+        "{}",
+        [
+          ":capabilities",
+          [
+            "#{}",
+            ":fs-read",
+            ":log"
+          ]
+        ],
+        [
+          ":expansion",
+          [
+            "::",
+            "'Expr",
+            "'String"
+          ]
+        ],
+        [
+          ":required",
+          [
+            "[]",
+            "'Syntax"
+          ]
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "mobile?",
+      [
+        "read-mobile"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.config/mobile?",
+    "js_ffi": null,
+    "schema": [
+      "::",
+      "'Option",
+      "'String"
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "read-dpr",
+      [],
+      [
+        "expect-number",
+        "|devicePixelRatio",
+        "js/window.devicePixelRatio"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.config/read-dpr",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ],
+      [
+        ":features",
+        [
+          "#{}",
+          ":js-ffi"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "read-mobile",
+      [],
+      [
+        "let",
+        [
+          [
+            "host",
+            [
+              "js-cast",
+              [
+                "new",
+                "mobile-detect",
+                [
+                  "user-agent"
+                ]
+              ],
+              "'sapium.config/MobileDetectHost"
+            ]
+          ]
+        ],
+        [
+          "js-nullish->option",
+          [
+            "host",
+            ".mobile"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.config/read-mobile",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ],
+      [
+        ":features",
+        [
+          "#{}",
+          ":js-ffi"
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'Option",
+          "'String"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defref",
+      "*gl-context",
+      [
+        "read-gl-context"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.global/*gl-context",
+    "js_ffi": null,
+    "schema": [
+      "::",
+      "'Ref",
+      "'JsObject"
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "deftrait",
+      "CanvasHost",
+      [
+        ".get-context",
+        [
+          "::",
+          "'Fn",
+          [
+            "{}",
+            [
+              ":return",
+              [
+                "::",
+                "'JsNullish",
+                "'JsObject"
+              ]
+            ],
+            [
+              ":args",
+              [
+                "[]",
+                "'sapium.global/CanvasHost",
+                "'String"
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": {
+      ":backend": {
+        "__edn_tag": "js"
+      },
+      ":kind": {
+        "__edn_tag": "external-object"
+      },
+      ":target": {
+        "__edn_tag": "browser"
+      }
+    },
+    "ffi_edn": "{} (:backend :js) (:kind :external-object) (:target :browser)",
+    "id": "sapium.global/CanvasHost",
+    "js_ffi": null,
+    "schema": "'Trait",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "canvas",
+      [
+        "read-canvas"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.global/canvas",
+    "js_ffi": null,
+    "schema": "'js-ffi.browser/DomElementHost",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "read-canvas",
+      [],
+      [
+        ".unwrap",
+        [
+          "query-selector",
+          "|canvas"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.global/read-canvas",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'js-ffi.browser/DomElementHost"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "read-gl-context",
+      [],
+      [
+        "let",
+        [
+          [
+            "host",
+            [
+              "js-cast",
+              "canvas",
+              "'sapium.global/CanvasHost"
+            ]
+          ],
+          [
+            "gl",
+            [
+              "host",
+              ".get-context",
+              "|webgl"
+            ]
+          ]
+        ],
+        [
+          "if",
+          [
+            "js-nullish?",
+            "gl"
+          ],
+          [
+            "raise",
+            "|WebGL-unavailable"
+          ],
+          [
+            "expect-object",
+            "|WebGL",
+            "gl"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.global/read-gl-context",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'JsObject"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ],
+      [
+        ":features",
+        [
+          "#{}",
+          ":js-ffi"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "&v+",
+      [
+        "a",
+        "b"
+      ],
+      [
+        "let[]",
+        [
+          "x",
+          "y",
+          "z"
+        ],
+        "a",
+        [
+          "let[]",
+          [
+            "x2",
+            "y2",
+            "z2"
+          ],
+          "b",
+          [
+            "[]",
+            [
+              "&+",
+              "x",
+              "x2"
+            ],
+            [
+              "&+",
+              "y",
+              "y2"
+            ],
+            [
+              "&+",
+              "z",
+              "z2"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.math/&v+",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'List",
+            "'Number"
+          ],
+          [
+            "::",
+            "'List",
+            "'Number"
+          ]
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'List",
+          "'Number"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "&v-",
+      [
+        "a",
+        "b"
+      ],
+      [
+        "let[]",
+        [
+          "x",
+          "y",
+          "z"
+        ],
+        "a",
+        [
+          "let[]",
+          [
+            "x2",
+            "y2",
+            "z2"
+          ],
+          "b",
+          [
+            "[]",
+            [
+              "&-",
+              "x",
+              "x2"
+            ],
+            [
+              "&-",
+              "y",
+              "y2"
+            ],
+            [
+              "&-",
+              "z",
+              "z2"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.math/&v-",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'List",
+            "'Number"
+          ],
+          [
+            "::",
+            "'List",
+            "'Number"
+          ]
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'List",
+          "'Number"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "c-distance",
+      [
+        "p1",
+        "p2"
+      ],
+      [
+        "let[]",
+        [
+          "x",
+          "y"
+        ],
+        "p1",
+        [
+          "let[]",
+          [
+            "a",
+            "b"
+          ],
+          "p2",
+          [
+            "sqrt",
+            [
+              "+",
+              [
+                "pow",
+                [
+                  "-",
+                  "x",
+                  "a"
+                ],
+                "2"
+              ],
+              [
+                "pow",
+                [
+                  "-",
+                  "y",
+                  "b"
+                ],
+                "2"
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.math/c-distance",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'List",
+            "'Number"
+          ],
+          [
+            "::",
+            "'List",
+            "'Number"
+          ]
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "square",
+      [
+        "x"
+      ],
+      [
+        "&*",
+        "x",
+        "x"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.math/square",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'Number"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "sum-squares",
+      [
+        "a",
+        "b"
+      ],
+      [
+        "&+",
+        [
+          "&*",
+          "a",
+          "a"
+        ],
+        [
+          "&*",
+          "b",
+          "b"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.math/sum-squares",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'Number",
+          "'Number"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defref",
+      "*viewer-forward",
+      [
+        "v3",
+        "0",
+        "0",
+        "-1"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.perspective/*viewer-forward",
+    "js_ffi": null,
+    "schema": [
+      "::",
+      "'Ref",
+      "'quaternion.vector/V3"
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defref",
+      "*viewer-position",
+      [
+        "v3",
+        "0",
+        "1",
+        "4"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.perspective/*viewer-position",
+    "js_ffi": null,
+    "schema": [
+      "::",
+      "'Ref",
+      "'quaternion.vector/V3"
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defref",
+      "*viewer-upward",
+      [
+        "v3",
+        "0",
+        "1",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.perspective/*viewer-upward",
+    "js_ffi": null,
+    "schema": [
+      "::",
+      "'Ref",
+      "'quaternion.vector/V3"
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "move-viewer-by!",
+      [
+        "x0",
+        "y0",
+        "z0"
+      ],
+      [
+        "let",
+        [
+          [
+            "dv",
+            [
+              "to-viewer-axis",
+              "x0",
+              "y0",
+              "z0"
+            ]
+          ],
+          [
+            "position",
+            "@*viewer-position"
+          ]
+        ],
+        [
+          "reset!",
+          "*viewer-position",
+          [
+            "&v+",
+            "position",
+            "dv"
+          ]
+        ]
+      ],
+      "&unit"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.perspective/move-viewer-by!",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'Number",
+          "'Number",
+          "'Number"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "rotate-glance-by!",
+      [
+        "x",
+        "y"
+      ],
+      [
+        "if",
+        [
+          "not=",
+          "x",
+          "0"
+        ],
+        [
+          "let",
+          [
+            [
+              "da",
+              [
+                "*",
+                "x",
+                "0.1"
+              ]
+            ],
+            [
+              "forward",
+              "@*viewer-forward"
+            ],
+            [
+              "upward",
+              "@*viewer-upward"
+            ],
+            [
+              "rightward",
+              [
+                "v-cross",
+                "upward",
+                "forward"
+              ]
+            ]
+          ],
+          [
+            "reset!",
+            "*viewer-forward",
+            [
+              "&v+",
+              [
+                "v-scale",
+                "forward",
+                [
+                  "cos",
+                  "da"
+                ]
+              ],
+              [
+                "v-scale",
+                "rightward",
+                [
+                  "sin",
+                  "da"
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      [
+        "if",
+        [
+          "not=",
+          "y",
+          "0"
+        ],
+        [
+          "let",
+          [
+            [
+              "da",
+              [
+                "*",
+                "y",
+                "0.1"
+              ]
+            ],
+            [
+              "forward",
+              "@*viewer-forward"
+            ],
+            [
+              "upward",
+              "@*viewer-upward"
+            ]
+          ],
+          [
+            "reset!",
+            "*viewer-forward",
+            [
+              "&v+",
+              [
+                "v-scale",
+                "forward",
+                [
+                  "cos",
+                  "da"
+                ]
+              ],
+              [
+                "v-scale",
+                "upward",
+                [
+                  "sin",
+                  "da"
+                ]
+              ]
+            ]
+          ],
+          [
+            "reset!",
+            "*viewer-upward",
+            [
+              "&v+",
+              [
+                "v-scale",
+                "upward",
+                [
+                  "cos",
+                  "da"
+                ]
+              ],
+              [
+                "v-scale",
+                "forward",
+                [
+                  "negate",
+                  [
+                    "sin",
+                    "da"
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      "&unit"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.perspective/rotate-glance-by!",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'Number",
+          "'Number"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "spin-glance-by!",
+      [
+        "v"
+      ],
+      [
+        "if",
+        [
+          "not=",
+          "v",
+          "0"
+        ],
+        [
+          "let",
+          [
+            [
+              "da",
+              [
+                "*",
+                "v",
+                "0.1"
+              ]
+            ],
+            [
+              "forward",
+              "@*viewer-forward"
+            ],
+            [
+              "upward",
+              "@*viewer-upward"
+            ],
+            [
+              "rightward",
+              [
+                "v-cross",
+                "upward",
+                "forward"
+              ]
+            ]
+          ],
+          [
+            "reset!",
+            "*viewer-upward",
+            [
+              "&v+",
+              [
+                "v-scale",
+                "upward",
+                [
+                  "cos",
+                  "da"
+                ]
+              ],
+              [
+                "v-scale",
+                "rightward",
+                [
+                  "sin",
+                  "da"
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      "&unit"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.perspective/spin-glance-by!",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'Number"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "to-viewer-axis",
+      [
+        "x",
+        "y",
+        "z"
+      ],
+      [
+        "let",
+        [
+          [
+            "forward",
+            "@*viewer-forward"
+          ],
+          [
+            "upward",
+            "@*viewer-upward"
+          ],
+          [
+            "rightward",
+            [
+              "v-cross",
+              "upward",
+              "forward"
+            ]
+          ]
+        ],
+        [
+          "&v+",
+          [
+            "&v+",
+            [
+              "v-scale",
+              "rightward",
+              [
+                "negate",
+                "x"
+              ]
+            ],
+            [
+              "v-scale",
+              "upward",
+              "y"
+            ]
+          ],
+          [
+            "v-scale",
+            "forward",
+            [
+              "negate",
+              "z"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.perspective/to-viewer-axis",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'quaternion.vector/V3"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'Number",
+          "'Number",
+          "'Number"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "v3-coordinates",
+      [
+        "v"
+      ],
+      [
+        "match",
+        "v",
+        [
+          [
+            ":v3",
+            "x",
+            "y",
+            "z"
+          ],
+          [
+            "[]",
+            "x",
+            "y",
+            "z"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "sapium.perspective/v3-coordinates",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'quaternion.vector/V3"
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'List",
+          "'Number"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  }
+]
