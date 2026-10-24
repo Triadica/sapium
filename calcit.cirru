@@ -56,8 +56,8 @@
         'on-control-event $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn on-control-event (elapsed states _delta)
             let
-                l-move $ map (:left-move states) refine-strength
-                r-move $ map (:right-move states) refine-strength
+                l-move $ .map (:left-move states) refine-strength
+                r-move $ .map (:right-move states) refine-strength
                 lx $ .unwrap $ .get l-move 0
                 ly $ .unwrap $ .get l-move 1
                 rx $ .unwrap $ .get r-move 0
@@ -101,6 +101,7 @@
                 set! js/window.onresize $ fn (e) (reset-canvas-size!) (render-app!)
                 hud! |ok~ |OK
               hud! |error build-errors
+            , &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []

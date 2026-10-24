@@ -15,13 +15,14 @@ concurrency:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7.0.1
       with:
         persist-credentials: false
 
-    - uses: actions/setup-node@v6
+    - uses: actions/setup-node@v6.5.0
       with:
         node-version: 24
         package-manager-cache: false
@@ -32,15 +33,21 @@ jobs:
         corepack prepare yarn@4.18.0 --activate
 
     - uses: calcit-lang/setup-calcit@ca701be5a471759e442aa053cd100720bbe1f09f # v1.5
+      with:
+        tools: calcit,caps
+        deps-file: deps.cirru
+        caps-version: "0.1.1"
 
     - name: Install formal dependencies
       run: caps --strict --ci && yarn install --immutable && caps verify --toolchain
 
     - name: Check canonical snapshot and types
       run: |
+        set -euo pipefail
         calcit calcit.cirru edit format
-        git diff --exit-code -- calcit.cirru
+        git diff --exit-code --quiet -- calcit.cirru
         calcit calcit.cirru --check-only --all-defs --strict-types
+        calcit fix --workflow strict --verify --format json | jq -e 'if .data.workflow.status == "passed" and .diagnostics == [] then true else ., false end'
 
     - name: Compile and build frontend
       run: calcit calcit.cirru js && yarn vite build --base="https://cos-sh.tiye.me/${GITHUB_REPOSITORY}/"
