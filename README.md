@@ -30,7 +30,7 @@ yarn vite
 ```
 
 本轮 Caps strict 三个模块及工具链校验、Yarn immutable、93/93 全定义检查（含依赖）、
-strict workflow（diagnostics=[]）与前端编译/构建通过。npm 安装统一设置一小时包龄，移除旧 procs 免等待项。
+strict workflow（diagnostics=[]）与前端编译/构建通过。npm 包龄门禁对新解析候选版本设为一小时，移除旧 procs 豁免；正常复用 yarn.lock 时不重新等待。
 
 另开终端运行 `calcit -w`。本项目没有 definition-attached tests，不将空测试结果
 作为验收；CI 检查完整类型和构建；本轮隔离浏览器已验收真实 WebGL 出帧、左右方向盘拖动及刷新恢复，
