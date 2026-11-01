@@ -9,10 +9,11 @@ Based on code:
 
 ### 本轮迁移的影响
 
-使用正式 Calcit / `@calcit/procs` 0.30.1，并配对 Touch Control 0.0.33、
-Quaternion 0.2.16、JS-FFI 0.2.6。保持原 SDF 场景、shader、相机控制和 DPR 逻辑；
+使用正式 Calcit / `@calcit/procs` 0.32.1，并配对 Touch Control 0.0.35、
+Quaternion 0.2.19、JS-FFI 0.2.9。保持原 SDF 场景、shader、相机控制和 DPR 逻辑；
 热更新仍通过原有 `hud!` 显示编译错误，不用异常替代页面提示。
-两处控制数据转换使用 `.map`，不改变数值处理或输入合同。
+本轮通过官方格式化接口迁移新类型标注语法；40 个定义的执行代码、schema 和元数据逐项一致。
+此前已迁移的两处控制数据转换继续使用 `.map`，不改变数值处理或输入合同。
 `reload!` 保留两条 HUD 调用并显式返回 Unit，不对外部 HUD 的返回值作类型假设。
 
 使用 Node.js 24、Yarn 4.18 和 Caps 0.1.1：
@@ -28,8 +29,12 @@ calcit js
 yarn vite
 ```
 
+本轮 Caps strict 三个模块及工具链校验、Yarn immutable、93/93 全定义检查（含依赖）、
+strict workflow（diagnostics=[]）与前端编译/构建通过。npm 安装统一设置一小时包龄，移除旧 procs 免等待项。
+
 另开终端运行 `calcit -w`。本项目没有 definition-attached tests，不将空测试结果
-作为验收；CI 检查完整类型和构建，实际绘图与控制交互需用浏览器验收。
+作为验收；CI 检查完整类型和构建；本轮隔离浏览器已验收真实 WebGL 出帧、左右方向盘拖动及刷新恢复，
+error/warn 为空。未将局部控制验收扩大为物理手柄或全部按键组合验证。
 现有 TWGL `createProgramInfo` 的一处外部函数 `unsafe-coerce` 合同仍保留，
 返回值继续经过空值检查和 `ProgramInfoHost` 检查；完整 strict 通过不等于该宿主调用已被深度证明。
 

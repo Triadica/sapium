@@ -12,34 +12,27 @@
       :defs $ {}
         'AugmentedArrayHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait AugmentedArrayHost
-            .push $ :: 'Fn $ {} (:return 'Unit)
-              :args $ [] 'sapium.app.main/AugmentedArrayHost 'JsObject
+            .push $ quote $ Fn sapium.app.main/AugmentedArrayHost JsObject (-> Unit)
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'PrimitivesHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait PrimitivesHost
-            .create-augmented-typed-array $ :: 'Fn $ {} (:return 'sapium.app.main/AugmentedArrayHost)
-              :args $ [] 'sapium.app.main/PrimitivesHost 'Number 'Number
+            .create-augmented-typed-array $ quote $ Fn sapium.app.main/PrimitivesHost Number Number (-> sapium.app.main/AugmentedArrayHost)
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'WebGLHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait WebGLHost (:canvas 'js-ffi.browser/DomElementHost) (:depth-test 'Number) (:cull-face 'Number) (:color-buffer-bit 'Number) (:depth-buffer-bit 'Number) (:triangles 'Number)
-            .enable $ :: 'Fn $ {} (:return 'Unit)
-              :args $ [] 'sapium.app.main/WebGLHost 'Number
-            .viewport $ :: 'Fn $ {} (:return 'Unit)
-              :args $ [] 'sapium.app.main/WebGLHost 'Number 'Number 'Number 'Number
-            .clear-color $ :: 'Fn $ {} (:return 'Unit)
-              :args $ [] 'sapium.app.main/WebGLHost 'Number 'Number 'Number 'Number
-            .clear $ :: 'Fn $ {} (:return 'Unit)
-              :args $ [] 'sapium.app.main/WebGLHost 'Number
-            .use-program $ :: 'Fn $ {} (:return 'Unit)
-              :args $ [] 'sapium.app.main/WebGLHost 'JsObject
+            .enable $ quote $ Fn sapium.app.main/WebGLHost Number (-> Unit)
+            .viewport $ quote $ Fn sapium.app.main/WebGLHost Number Number Number Number (-> Unit)
+            .clear-color $ quote $ Fn sapium.app.main/WebGLHost Number Number Number Number (-> Unit)
+            .clear $ quote $ Fn sapium.app.main/WebGLHost Number (-> Unit)
+            .use-program $ quote $ Fn sapium.app.main/WebGLHost JsObject (-> Unit)
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
             :names $ {} (:color-buffer-bit |COLOR_BUFFER_BIT) (:cull-face |CULL_FACE) (:depth-buffer-bit |DEPTH_BUFFER_BIT) (:depth-test |DEPTH_TEST) (:triangles |TRIANGLES)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
             if dev? $ load-console-formatter!
@@ -50,9 +43,7 @@
             reset-canvas-size!
             render-app!
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
         'on-control-event $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn on-control-event (elapsed states _delta)
             let
@@ -84,16 +75,13 @@
                 render-app!
             , &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ [] 'Number 'touch-control.core/ControlState 'touch-control.core/ControlDelta
+          :schema $ quote $ Fn Number touch-control.core/ControlState touch-control.core/ControlDelta (-> Unit)
         'refine-strength $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn refine-strength (x)
             * x 0.1 $ sqrt $ expect-number |Math.abs
               js/Math.abs $ &* x 0.01
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] 'Number
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn Number (-> Number) (:features :js-ffi)
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! ()
             if (nil? build-errors)
@@ -103,9 +91,7 @@
               hud! |error build-errors
             , &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
         'render-app! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-app! ()
             let
@@ -143,9 +129,7 @@
                 twgl/drawBufferInfo gl-raw buffer-info $ gl :triangles
             , &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
         'reset-canvas-size! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reset-canvas-size! ()
             let
@@ -154,9 +138,7 @@
               element-set-style! canvas |height $ str (host :inner-height) |px
             , &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns sapium.app.main
           :require (|./calcit.build-errors :default build-errors) (|bottom-tip :default hud!)
@@ -173,24 +155,23 @@
         '*shader-programs $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defref *shader-programs ({})
           :examples $ []
-          :schema $ :: 'Ref $ :: 'Map 'String 'sapium.config/ProgramInfoHost
+          :schema $ quote $ Ref (Map String sapium.config/ProgramInfoHost)
         'MobileDetectHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait MobileDetectHost
-            .mobile $ :: 'Fn $ {}
-              :return $ :: 'JsNullish 'String
-              :args $ [] 'sapium.config/MobileDetectHost
+            .mobile $ quote $ Fn sapium.config/MobileDetectHost
+              -> $ JsNullish String
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'ProgramInfoHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait ProgramInfoHost (:program 'JsObject)
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'back-cone-scale $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def back-cone-scale 1
           :examples $ []
-          :schema $ :: 'Number
+          :schema $ quote Number
         'cached-build-program $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn cached-build-program (gl vs fs)
             let
@@ -199,10 +180,8 @@
               if (&map:contains? caches field)
                 .unwrap $ .get caches field
                 let
-                    build $ unsafe-coerce twgl/createProgramInfo $ :: 'Fn
-                      {}
-                        :return $ :: 'JsNullish 'JsObject
-                        :args $ [] 'JsObject 'JsObject
+                    build $ unsafe-coerce twgl/createProgramInfo $ quote
+                      Fn JsObject JsObject $ -> $ JsNullish JsObject
                     raw $ build gl $ js-array vs fs
                   if (js-nullish? raw) (raise "|Failed to compile shader")
                   let
@@ -210,27 +189,25 @@
                     swap! *shader-programs assoc field program
                     , program
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'sapium.config/ProgramInfoHost)
-            :args $ [] 'JsObject 'String 'String
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn JsObject String String (-> sapium.config/ProgramInfoHost) (:features :js-ffi)
         'dev? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def dev?
             = |dev $ .unwrap-or (get-env |mode) |release
           :examples $ []
-          :schema $ :: 'Bool
+          :schema $ quote Bool
         'dpr $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def dpr (read-dpr)
           :examples $ []
-          :schema $ :: 'Number
+          :schema $ quote Number
         'half-pi $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def half-pi (* 0.5 &PI)
           :examples $ []
-          :schema $ :: 'Number
+          :schema $ quote Number
         'hide-tabs? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def hide-tabs?
             = |true $ .unwrap-or (get-env |hide-tabs) |false
           :examples $ []
-          :schema $ :: 'Bool
+          :schema $ quote Bool
         'inline-shader $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defmacro inline-shader (name)
             let
@@ -241,20 +218,17 @@
               println "|reading shader file:" name
               read-file shader
           :examples $ []
-          :schema $ :: 'Macro $ {}
-            :capabilities $ #{} :fs-read :log
-            :expansion $ :: 'Expr 'String
-            :required $ [] 'Syntax
+          :schema $ quote $ Macro Syntax
+            -> $ Expr String
+            :capabilities :fs-read :log
         'mobile? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def mobile? (read-mobile)
           :examples $ []
-          :schema $ :: 'Option 'String
+          :schema $ quote $ Option String
         'read-dpr $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn read-dpr () (expect-number |devicePixelRatio js/window.devicePixelRatio)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn (-> Number) (:features :js-ffi)
         'read-mobile $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn read-mobile ()
             let
@@ -263,10 +237,9 @@
                   , 'sapium.config/MobileDetectHost
               js-nullish->option $ host .mobile
           :examples $ []
-          :schema $ :: 'Fn $ {}
-            :args $ []
-            :features $ #{} :js-ffi
-            :return $ :: 'Option 'String
+          :schema $ quote $ Fn
+            -> $ Option String
+            :features :js-ffi
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns sapium.config
           :require (|mobile-detect :default mobile-detect) (|twgl.js :as twgl)
@@ -278,25 +251,23 @@
         '*gl-context $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defref *gl-context (read-gl-context)
           :examples $ []
-          :schema $ :: 'Ref 'JsObject
+          :schema $ quote $ Ref JsObject
         'CanvasHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait CanvasHost
-            .get-context $ :: 'Fn $ {}
-              :return $ :: 'JsNullish 'JsObject
-              :args $ [] 'sapium.global/CanvasHost 'String
+            .get-context $ quote $ Fn sapium.global/CanvasHost String
+              -> $ JsNullish JsObject
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'canvas $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def canvas (read-canvas)
           :examples $ []
-          :schema $ :: 'js-ffi.browser/DomElementHost
+          :schema $ quote js-ffi.browser/DomElementHost
         'read-canvas $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn read-canvas ()
             .unwrap $ query-selector |canvas
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'js-ffi.browser/DomElementHost)
-            :args $ []
+          :schema $ quote $ Fn (-> js-ffi.browser/DomElementHost)
         'read-gl-context $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn read-gl-context ()
             let
@@ -304,9 +275,7 @@
                 gl $ host .get-context |webgl
               if (js-nullish? gl) (raise |WebGL-unavailable) (expect-object |WebGL gl)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'JsObject)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn (-> JsObject) (:features :js-ffi)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns sapium.global
           :require
@@ -318,16 +287,14 @@
           :code $ quote $ defn &v+ (a b)
             let[] (x y z) a $ let[] (x2 y2 z2) b $ [] (&+ x x2) (&+ y y2) (&+ z z2)
           :examples $ []
-          :schema $ :: 'Fn $ {}
-            :args $ [] (:: 'List 'Number) (:: 'List 'Number)
-            :return $ :: 'List 'Number
+          :schema $ quote $ Fn (List Number) (List Number)
+            -> $ List Number
         '&v- $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn &v- (a b)
             let[] (x y z) a $ let[] (x2 y2 z2) b $ [] (&- x x2) (&- y y2) (&- z z2)
           :examples $ []
-          :schema $ :: 'Fn $ {}
-            :args $ [] (:: 'List 'Number) (:: 'List 'Number)
-            :return $ :: 'List 'Number
+          :schema $ quote $ Fn (List Number) (List Number)
+            -> $ List Number
         'c-distance $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn c-distance (p1 p2)
             let[] (x y) p1 $ let[] (a b) p2 $ sqrt
@@ -335,19 +302,16 @@
                 pow (- x a) 2
                 pow (- y b) 2
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] (:: 'List 'Number) (:: 'List 'Number)
+          :schema $ quote $ Fn (List Number) (List Number) (-> Number)
         'square $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn square (x) (&* x x)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] 'Number
+          :schema $ quote $ Fn Number (-> Number)
         'sum-squares $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn sum-squares (a b)
             &+ (&* a a) (&* b b)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] 'Number 'Number
+          :schema $ quote $ Fn Number Number (-> Number)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns sapium.math
     'sapium.perspective $ %{} 'FileEntry
@@ -355,15 +319,15 @@
         '*viewer-forward $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defref *viewer-forward (v3 0 0 -1)
           :examples $ []
-          :schema $ :: 'Ref 'quaternion.vector/V3
+          :schema $ quote $ Ref quaternion.vector/V3
         '*viewer-position $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defref *viewer-position (v3 0 1 4)
           :examples $ []
-          :schema $ :: 'Ref 'quaternion.vector/V3
+          :schema $ quote $ Ref quaternion.vector/V3
         '*viewer-upward $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defref *viewer-upward (v3 0 1 0)
           :examples $ []
-          :schema $ :: 'Ref 'quaternion.vector/V3
+          :schema $ quote $ Ref quaternion.vector/V3
         'move-viewer-by! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn move-viewer-by! (x0 y0 z0)
             let
@@ -372,8 +336,7 @@
               reset! *viewer-position $ &v+ position dv
             , &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ [] 'Number 'Number 'Number
+          :schema $ quote $ Fn Number Number Number (-> Unit)
         'rotate-glance-by! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn rotate-glance-by! (x y)
             if (not= x 0)
@@ -398,8 +361,7 @@
                   v-scale forward $ negate $ sin da
             , &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ [] 'Number 'Number
+          :schema $ quote $ Fn Number Number (-> Unit)
         'spin-glance-by! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn spin-glance-by! (v)
             if (not= v 0)
@@ -413,8 +375,7 @@
                   v-scale rightward $ sin da
             , &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ [] 'Number
+          :schema $ quote $ Fn Number (-> Unit)
         'to-viewer-axis $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn to-viewer-axis (x y z)
             let
@@ -427,17 +388,15 @@
                   v-scale upward y
                 v-scale forward $ negate z
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'quaternion.vector/V3)
-            :args $ [] 'Number 'Number 'Number
+          :schema $ quote $ Fn Number Number Number (-> quaternion.vector/V3)
         'v3-coordinates $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn v3-coordinates (v)
             match v $
               :v3 x y z
               [] x y z
           :examples $ []
-          :schema $ :: 'Fn $ {}
-            :args $ [] 'quaternion.vector/V3
-            :return $ :: 'List 'Number
+          :schema $ quote $ Fn quaternion.vector/V3
+            -> $ List Number
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns sapium.perspective
           :require $ quaternion.vector :refer $ V3 v3 v-cross v-scale &v+
