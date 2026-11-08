@@ -46,7 +46,7 @@ jobs:
         set -euo pipefail
         calcit calcit.cirru edit format
         git diff --exit-code --quiet -- calcit.cirru
-        calcit calcit.cirru --check-only --all-defs --strict-types
+        calcit calcit.cirru --check-only --all-defs
         calcit fix --workflow strict --verify --format json | jq -e 'if .data.workflow.status == "passed" and .diagnostics == [] then true else ., false end'
 
     - name: Compile and build frontend

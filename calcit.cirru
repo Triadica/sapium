@@ -12,23 +12,23 @@
       :defs $ {}
         'AugmentedArrayHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait AugmentedArrayHost
-            .push $ quote $ Fn sapium.app.main/AugmentedArrayHost JsObject (-> Unit)
+            .push $ Fn sapium.app.main/AugmentedArrayHost JsObject $ -> Unit
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
           :schema $ quote Trait
         'PrimitivesHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait PrimitivesHost
-            .create-augmented-typed-array $ quote $ Fn sapium.app.main/PrimitivesHost Number Number (-> sapium.app.main/AugmentedArrayHost)
+            .create-augmented-typed-array $ Fn sapium.app.main/PrimitivesHost Number Number $ -> sapium.app.main/AugmentedArrayHost
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
           :schema $ quote Trait
         'WebGLHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait WebGLHost (:canvas 'js-ffi.browser/DomElementHost) (:depth-test 'Number) (:cull-face 'Number) (:color-buffer-bit 'Number) (:depth-buffer-bit 'Number) (:triangles 'Number)
-            .enable $ quote $ Fn sapium.app.main/WebGLHost Number (-> Unit)
-            .viewport $ quote $ Fn sapium.app.main/WebGLHost Number Number Number Number (-> Unit)
-            .clear-color $ quote $ Fn sapium.app.main/WebGLHost Number Number Number Number (-> Unit)
-            .clear $ quote $ Fn sapium.app.main/WebGLHost Number (-> Unit)
-            .use-program $ quote $ Fn sapium.app.main/WebGLHost JsObject (-> Unit)
+            .enable $ Fn sapium.app.main/WebGLHost Number $ -> Unit
+            .viewport $ Fn sapium.app.main/WebGLHost Number Number Number Number $ -> Unit
+            .clear-color $ Fn sapium.app.main/WebGLHost Number Number Number Number $ -> Unit
+            .clear $ Fn sapium.app.main/WebGLHost Number $ -> Unit
+            .use-program $ Fn sapium.app.main/WebGLHost JsObject $ -> Unit
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
             :names $ {} (:color-buffer-bit |COLOR_BUFFER_BIT) (:cull-face |CULL_FACE) (:depth-buffer-bit |DEPTH_BUFFER_BIT) (:depth-test |DEPTH_TEST) (:triangles |TRIANGLES)
@@ -158,8 +158,7 @@
           :schema $ quote $ Ref (Map String sapium.config/ProgramInfoHost)
         'MobileDetectHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait MobileDetectHost
-            .mobile $ quote $ Fn sapium.config/MobileDetectHost
-              -> $ JsNullish String
+            .mobile $ Fn sapium.config/MobileDetectHost $ -> (JsNullish String)
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
           :schema $ quote Trait
@@ -180,14 +179,12 @@
               if (&map:contains? caches field)
                 .unwrap $ .get caches field
                 let
-                    build $ unsafe-coerce twgl/createProgramInfo $ quote
-                      Fn JsObject JsObject $ -> $ JsNullish JsObject
-                    raw $ build gl $ js-array vs fs
-                  if (js-nullish? raw) (raise "|Failed to compile shader")
-                  let
-                      program $ js-cast raw 'sapium.config/ProgramInfoHost
-                    swap! *shader-programs assoc field program
-                    , program
+                    raw $ twgl/createProgramInfo gl $ js-array vs fs
+                    program $ js-cast
+                      expect-object "|Failed to compile shader with TWGL.createProgramInfo" raw
+                      , 'sapium.config/ProgramInfoHost
+                  swap! *shader-programs assoc field program
+                  , program
           :examples $ []
           :schema $ quote $ Fn JsObject String String (-> sapium.config/ProgramInfoHost) (:features :js-ffi)
         'dev? $ %{} 'CodeEntry (:doc |)
@@ -244,7 +241,7 @@
         :code $ quote $ ns sapium.config
           :require (|mobile-detect :default mobile-detect) (|twgl.js :as twgl)
             sapium.$meta :refer $ calcit-dirname
-            js-ffi.contract :refer $ expect-number
+            js-ffi.contract :refer $ expect-number expect-object
             js-ffi.browser :refer $ user-agent
     'sapium.global $ %{} 'FileEntry
       :defs $ {}
@@ -254,8 +251,7 @@
           :schema $ quote $ Ref JsObject
         'CanvasHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait CanvasHost
-            .get-context $ quote $ Fn sapium.global/CanvasHost String
-              -> $ JsNullish JsObject
+            .get-context $ Fn sapium.global/CanvasHost String $ -> (JsNullish JsObject)
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
           :schema $ quote Trait
@@ -396,7 +392,7 @@
               [] x y z
           :examples $ []
           :schema $ quote $ Fn quaternion.vector/V3
-            -> $ List Number
+            -> $ Tuple Number Number Number
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns sapium.perspective
           :require $ quaternion.vector :refer $ V3 v3 v-cross v-scale &v+

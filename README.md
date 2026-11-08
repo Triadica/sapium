@@ -7,7 +7,16 @@ Based on code:
 - Ray Marching https://www.shadertoy.com/view/tlVGDc
 - SDFs https://iquilezles.org/articles/distfunctions/
 
-### 本轮迁移的影响
+### Calcit 0.38.0 使用说明
+
+升级时配套使用 Calcit 和 `@calcit/procs` 0.38.0、Touch Control 0.0.39、
+Quaternion 0.2.23 和 JS FFI 0.2.13。重装依赖后重新生成 JS。
+场景、控制方式、着色器源码和页面 HUD 沿用原版。
+
+相机向量导出为三个数值的 Tuple。TWGL 的着色器编译结果通过宿主对象和
+`ProgramInfoHost` 检查后才缓存。编译失败仍会报错，失败结果不会写入缓存。
+
+### 历史：Calcit 0.32.1
 
 使用正式 Calcit / `@calcit/procs` 0.32.1，并配对 Touch Control 0.0.35、
 Quaternion 0.2.19、JS-FFI 0.2.9。保持原 SDF 场景、shader、相机控制和 DPR 逻辑；
