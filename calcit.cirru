@@ -155,7 +155,7 @@
         '*shader-programs $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defref *shader-programs ({})
           :examples $ []
-          :schema $ quote $ Ref (Map String sapium.config/ProgramInfoHost)
+          :schema $ quote $ Ref (Map String ProgramInfoHost)
         'MobileDetectHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait MobileDetectHost
             .mobile $ Fn sapium.config/MobileDetectHost $ -> (JsNullish String)
@@ -186,7 +186,7 @@
                   swap! *shader-programs assoc field program
                   , program
           :examples $ []
-          :schema $ quote $ Fn JsObject String String (-> sapium.config/ProgramInfoHost) (:features :js-ffi)
+          :schema $ quote $ Fn JsObject String String (-> ProgramInfoHost) (:features :js-ffi)
         'dev? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def dev?
             = |dev $ .unwrap-or (get-env |mode) |release
@@ -258,12 +258,12 @@
         'canvas $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def canvas (read-canvas)
           :examples $ []
-          :schema $ quote js-ffi.browser/DomElementHost
+          :schema $ quote DomElementHost
         'read-canvas $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn read-canvas ()
             .unwrap $ query-selector |canvas
           :examples $ []
-          :schema $ quote $ Fn (-> js-ffi.browser/DomElementHost)
+          :schema $ quote $ Fn (-> DomElementHost)
         'read-gl-context $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn read-gl-context ()
             let
@@ -315,15 +315,15 @@
         '*viewer-forward $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defref *viewer-forward (v3 0 0 -1)
           :examples $ []
-          :schema $ quote $ Ref quaternion.vector/V3
+          :schema $ quote $ Ref V3
         '*viewer-position $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defref *viewer-position (v3 0 1 4)
           :examples $ []
-          :schema $ quote $ Ref quaternion.vector/V3
+          :schema $ quote $ Ref V3
         '*viewer-upward $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defref *viewer-upward (v3 0 1 0)
           :examples $ []
-          :schema $ quote $ Ref quaternion.vector/V3
+          :schema $ quote $ Ref V3
         'move-viewer-by! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn move-viewer-by! (x0 y0 z0)
             let
@@ -384,14 +384,14 @@
                   v-scale upward y
                 v-scale forward $ negate z
           :examples $ []
-          :schema $ quote $ Fn Number Number Number (-> quaternion.vector/V3)
+          :schema $ quote $ Fn Number Number Number (-> V3)
         'v3-coordinates $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn v3-coordinates (v)
             match v $
               :v3 x y z
               [] x y z
           :examples $ []
-          :schema $ quote $ Fn quaternion.vector/V3
+          :schema $ quote $ Fn V3
             -> $ Tuple Number Number Number
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns sapium.perspective
