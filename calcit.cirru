@@ -43,7 +43,7 @@
             reset-canvas-size!
             render-app!
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :js-ffi :state)
         'on-control-event $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn on-control-event (elapsed states _delta)
             let
@@ -75,7 +75,7 @@
                 render-app!
             , &unit
           :examples $ []
-          :schema $ quote $ Fn Number touch-control.core/ControlState touch-control.core/ControlDelta (-> Unit)
+          :schema $ quote $ Fn Number touch-control.core/ControlState touch-control.core/ControlDelta (-> Unit) (:features :state)
         'refine-strength $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn refine-strength (x)
             * x 0.1 $ sqrt $ expect-number |Math.abs
@@ -91,7 +91,7 @@
               hud! |error build-errors
             , &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :js-ffi :state)
         'render-app! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-app! ()
             let
@@ -129,7 +129,7 @@
                 twgl/drawBufferInfo gl-raw buffer-info $ gl :triangles
             , &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :js-ffi :state)
         'reset-canvas-size! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reset-canvas-size! ()
             let
@@ -186,7 +186,7 @@
                   swap! *shader-programs assoc field program
                   , program
           :examples $ []
-          :schema $ quote $ Fn JsObject String String (-> ProgramInfoHost) (:features :js-ffi)
+          :schema $ quote $ Fn JsObject String String (-> ProgramInfoHost) (:features :js-ffi :state)
         'dev? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def dev?
             = |dev $ .unwrap-or (get-env |mode) |release
@@ -332,7 +332,7 @@
               reset! *viewer-position $ &v+ position dv
             , &unit
           :examples $ []
-          :schema $ quote $ Fn Number Number Number (-> Unit)
+          :schema $ quote $ Fn Number Number Number (-> Unit) (:features :state)
         'rotate-glance-by! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn rotate-glance-by! (x y)
             if (not= x 0)
@@ -357,7 +357,7 @@
                   v-scale forward $ negate $ sin da
             , &unit
           :examples $ []
-          :schema $ quote $ Fn Number Number (-> Unit)
+          :schema $ quote $ Fn Number Number (-> Unit) (:features :state)
         'spin-glance-by! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn spin-glance-by! (v)
             if (not= v 0)
@@ -371,7 +371,7 @@
                   v-scale rightward $ sin da
             , &unit
           :examples $ []
-          :schema $ quote $ Fn Number (-> Unit)
+          :schema $ quote $ Fn Number (-> Unit) (:features :state)
         'to-viewer-axis $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn to-viewer-axis (x y z)
             let
@@ -384,7 +384,7 @@
                   v-scale upward y
                 v-scale forward $ negate z
           :examples $ []
-          :schema $ quote $ Fn Number Number Number (-> V3)
+          :schema $ quote $ Fn Number Number Number (-> V3) (:features :state)
         'v3-coordinates $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn v3-coordinates (v)
             match v $
