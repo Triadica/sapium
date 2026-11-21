@@ -9,8 +9,8 @@ Based on code:
 
 ### Calcit 0.44.0 使用说明
 
-升级时配套使用 Calcit 和 `@calcit/procs` 0.44.0、Touch Control 0.0.41、
-Quaternion 0.2.25 和 JS FFI 0.2.18。重装依赖后重新生成 JS。
+升级时配套使用 Calcit 和 `@calcit/procs` 0.44.0、Touch Control 0.0.43、
+Quaternion 0.2.26 和 JS FFI 0.2.19。重装依赖后重新生成 JS。
 场景、控制方式、着色器源码和页面 HUD 沿用原版。
 
 相机向量导出为三个数值的 Tuple。TWGL 的着色器编译结果通过宿主对象和
