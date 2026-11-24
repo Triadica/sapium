@@ -7,9 +7,9 @@ Based on code:
 - Ray Marching https://www.shadertoy.com/view/tlVGDc
 - SDFs https://iquilezles.org/articles/distfunctions/
 
-### Calcit 0.44.0 使用说明
+### Calcit 0.45.0 使用说明
 
-升级时配套使用 Calcit 和 `@calcit/procs` 0.44.0、Touch Control 0.0.43、
+升级时配套使用 Calcit 和 `@calcit/procs` 0.45.0、Touch Control 0.0.43、
 Quaternion 0.2.26 和 JS FFI 0.2.19。重装依赖后重新生成 JS。
 场景、控制方式、着色器源码和页面 HUD 沿用原版。
 
@@ -25,7 +25,7 @@ Quaternion 0.2.19、JS-FFI 0.2.9。保持原 SDF 场景、shader、相机控制�
 此前已迁移的两处控制数据转换继续使用 `.map`，不改变数值处理或输入合同。
 `reload!` 保留两条 HUD 调用并显式返回 Unit，不对外部 HUD 的返回值作类型假设。
 
-使用 Node.js 24、Yarn 4.18 和 Caps 0.1.1：
+使用 Node.js 24、Yarn 4.18 和 Caps 0.1.2：
 
 ```sh
 corepack enable
