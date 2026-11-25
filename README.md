@@ -7,10 +7,10 @@ Based on code:
 - Ray Marching https://www.shadertoy.com/view/tlVGDc
 - SDFs https://iquilezles.org/articles/distfunctions/
 
-### Calcit 0.45.0 使用说明
+### Calcit 0.45.1 使用说明
 
-升级时配套使用 Calcit 和 `@calcit/procs` 0.45.0、Touch Control 0.0.43、
-Quaternion 0.2.26 和 JS FFI 0.2.19。重装依赖后重新生成 JS。
+升级时配套使用 Calcit 和 `@calcit/procs` 0.45.1、Touch Control 0.0.45、
+Quaternion 0.2.27 和 JS FFI 0.2.24。重装依赖后重新生成 JS。
 场景、控制方式、着色器源码和页面 HUD 沿用原版。
 
 相机向量导出为三个数值的 Tuple。TWGL 的着色器编译结果通过宿主对象和
@@ -38,12 +38,12 @@ calcit js
 yarn vite
 ```
 
-本轮 Caps strict 三个模块及工具链校验、Yarn immutable、93/93 全定义检查（含依赖）、
+本轮 Caps strict 三个模块及工具链校验、Yarn immutable、115/115 全定义检查（含依赖）、
 strict workflow（diagnostics=[]）与前端编译/构建通过。npm 包龄门禁对新解析候选版本设为一小时，移除旧 procs 豁免；正常复用 yarn.lock 时不重新等待。
 
 另开终端运行 `calcit -w`。本项目没有 definition-attached tests，不将空测试结果
-作为验收；CI 检查完整类型和构建；本轮隔离浏览器已验收真实 WebGL 出帧、左右方向盘拖动及刷新恢复，
-error/warn 为空。未将局部控制验收扩大为物理手柄或全部按键组合验证。
+作为验收；CI 检查完整类型和构建；本轮隔离 Chrome（软件 WebGL）已验收画面出帧、左右方向盘拖动及刷新，
+未捕获运行时异常。未将局部控制验收扩大为物理手柄或全部按键组合验证。
 现有 TWGL `createProgramInfo` 的一处外部函数 `unsafe-coerce` 合同仍保留，
 返回值继续经过空值检查和 `ProgramInfoHost` 检查；完整 strict 通过不等于该宿主调用已被深度证明。
 
