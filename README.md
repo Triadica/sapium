@@ -7,10 +7,10 @@ Based on code:
 - Ray Marching https://www.shadertoy.com/view/tlVGDc
 - SDFs https://iquilezles.org/articles/distfunctions/
 
-### Calcit 0.45.1 使用说明
+### Calcit 0.46.0 使用说明
 
-升级时配套使用 Calcit 和 `@calcit/procs` 0.45.1、Touch Control 0.0.45、
-Quaternion 0.2.27 和 JS FFI 0.2.24。重装依赖后重新生成 JS。
+升级时配套使用 Calcit 和 `@calcit/procs` 0.46.0、Touch Control 0.0.47、
+Quaternion 0.2.28 和 JS FFI 0.2.26。重装依赖后重新生成 JS。
 场景、控制方式、着色器源码和页面 HUD 沿用原版。
 
 相机向量导出为三个数值的 Tuple。TWGL 的着色器编译结果通过宿主对象和
