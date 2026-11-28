@@ -1,5 +1,5 @@
 
-{} (:calcit-version |0.47.1)
+{} (:calcit-version |0.48.0)
   :version |0.0.22
   :dependencies $ {} (|Triadica/touch-control |0.0.48)
     |calcit-lang/js-ffi |0.2.26

@@ -7,9 +7,9 @@ Based on code:
 - Ray Marching https://www.shadertoy.com/view/tlVGDc
 - SDFs https://iquilezles.org/articles/distfunctions/
 
-### Calcit 0.47.1 使用说明
+### Calcit 0.48.0 使用说明
 
-升级时配套使用 Calcit 和 `@calcit/procs` 0.47.1、Touch Control 0.0.48、
+升级时配套使用 Calcit 和 `@calcit/procs` 0.48.0、Touch Control 0.0.48、
 Quaternion 0.2.29 和 JS FFI 0.2.26。重装依赖后重新生成 JS。
 场景、控制方式、着色器源码和页面 HUD 沿用原版。
 
